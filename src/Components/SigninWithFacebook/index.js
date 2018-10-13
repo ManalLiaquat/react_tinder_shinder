@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import firebase from "../../Config/firebase";
+import Toast from "../../Constants/Toast";
 
 const login = () => {
   var provider = new firebase.auth.FacebookAuthProvider();
@@ -11,7 +12,13 @@ const login = () => {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var token = result.credential.accessToken;
       // console.log(token);
-
+      Toast({
+        type: "success",
+        title: "Signed in successfully",
+        onClose: () => {
+          window.location.reload();
+        }
+      });
       // The signed-in user info.
       var user = result.user;
       // console.log(user);
