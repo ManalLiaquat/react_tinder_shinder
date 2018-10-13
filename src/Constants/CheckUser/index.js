@@ -6,7 +6,7 @@ const isUser = () => {
       localStorage.setItem("user", JSON.stringify(user));
       console.log(user.displayName + " | " + user.email);
     } else {
-      this.setState({ user: null });
+      localStorage.setItem("user", null);
     }
   });
 };
