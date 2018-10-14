@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton, SwipeableDrawer, List, Divider } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
+import SigninWithFacebook from "../../SigninWithFacebook";
+
 
 const styles = {
   root: {
@@ -11,7 +13,6 @@ const styles = {
   },
   grow: {
     flexGrow: 1,
-    align: 'left'
   },
   menuButton: {
     marginLeft: -12,
@@ -27,7 +28,7 @@ const styles = {
 
 class SwipeableTemporaryDrawer extends React.Component {
   state = {
-    left: false
+    left: false,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -37,7 +38,8 @@ class SwipeableTemporaryDrawer extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
+    console.log(user, '****user');
 
     const sideList = (
       <div className={classes.list}>
@@ -53,31 +55,37 @@ class SwipeableTemporaryDrawer extends React.Component {
         <div className={classes.root}>
           <AppBar position="static" color="secondary">
             <Toolbar>
-              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer('left', true)}>
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.grow}>
+              {
+                user && <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer('left', true)}>
+                  <MenuIcon />
+                </IconButton>
+              }
+              <Typography variant="h6" color="inherit" align="left" className={classes.grow}>
                 Tinder Shinder
               </Typography>
-              <Button color="inherit">Login</Button>
+              {
+                !user && <SigninWithFacebook />
+              }
             </Toolbar>
           </AppBar>
         </div>
 
-        <SwipeableDrawer
-          open={this.state.left}
-          onClose={this.toggleDrawer('left', false)}
-          onOpen={this.toggleDrawer('left', true)}
-        >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}
+        {
+          user && <SwipeableDrawer
+            open={this.state.left}
+            onClose={this.toggleDrawer('left', false)}
+            onOpen={this.toggleDrawer('left', true)}
           >
-            {sideList}
-          </div>
-        </SwipeableDrawer>
+            <div
+              tabIndex={0}
+              role="button"
+              onClick={this.toggleDrawer('left', false)}
+              onKeyDown={this.toggleDrawer('left', false)}
+            >
+              {sideList}
+            </div>
+          </SwipeableDrawer>
+        }
       </div>
     );
   }
