@@ -11,4 +11,7 @@ const isUser = () => {
   });
 };
 
-export default isUser;
+const User = JSON.parse(localStorage.getItem("user"));
+
+
+export { isUser, User };
