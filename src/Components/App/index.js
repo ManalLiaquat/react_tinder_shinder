@@ -5,9 +5,9 @@ import React, { Component } from "react";
 // import CardWrapper from "../UserCard";
 import GoogleMap from "../GoogleMap";
 import SigninWithFacebook from "../SigninWithFacebook";
+import AppBar from "../MaterialUI/AppBar";
 
-import CheckUser from "../../Constants/CheckUser";
-import User from "../../Constants/GetUser";
+import * as CheckUser from "../../Constants/CheckUser";
 import "./index.css";
 
 class App extends Component {
@@ -19,22 +19,25 @@ class App extends Component {
   }
 
   componentDidMount() {
-    CheckUser();
-    this.setState({ user: User });
+    CheckUser.isUser()
+    this.setState({ user: CheckUser.User });
   }
 
   render() {
     const { user } = this.state;
     return (
       <div className="App">
-        {user ? (
-          <div>
-            <GoogleMap />
+        <AppBar user={user}>
+          {user ? (
+            <div>
+              {/* <GoogleMap /> */}
+              Uncomment for usage
             {/* <CardWrapper /> */}
-          </div>
-        ) : (
-          <SigninWithFacebook />
-        )}
+            </div>
+          ) : (
+              <SigninWithFacebook />
+            )}
+        </AppBar>
       </div>
     );
   }
