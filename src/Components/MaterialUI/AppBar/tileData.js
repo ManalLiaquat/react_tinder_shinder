@@ -2,9 +2,11 @@
 
 import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import { Link } from "react-router-dom";
+import Home from "@material-ui/icons/HomeRounded";
+import Dashboard from "@material-ui/icons/DashboardRounded";
+
 import DraftsIcon from "@material-ui/icons/Drafts";
-import StarIcon from "@material-ui/icons/Star";
 import SendIcon from "@material-ui/icons/Send";
 import MailIcon from "@material-ui/icons/Mail";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -14,16 +16,21 @@ export const mailFolderListItems = (
   <div>
     <ListItem button>
       <ListItemIcon>
-        <InboxIcon />
+        <Home />
       </ListItemIcon>
-      <ListItemText primary="Inbox" />
+      <ListItemText primary="Home" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <StarIcon />
+        <Dashboard />
       </ListItemIcon>
-      <ListItemText primary="Starred" />
+      <ListItemText primary="Dashboard" />
     </ListItem>
+  </div>
+);
+
+export const otherMailFolderListItems = (
+  <div>
     <ListItem button>
       <ListItemIcon>
         <SendIcon />
@@ -36,11 +43,6 @@ export const mailFolderListItems = (
       </ListItemIcon>
       <ListItemText primary="Drafts" />
     </ListItem>
-  </div>
-);
-
-export const otherMailFolderListItems = (
-  <div>
     <ListItem button>
       <ListItemIcon>
         <MailIcon />
