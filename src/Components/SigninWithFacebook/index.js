@@ -14,6 +14,8 @@ class SigninWithFacebook extends React.Component {
 
   login() {
     const { myProps } = this.state
+    // console.log(myProps);
+
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase
       .auth()
@@ -22,12 +24,17 @@ class SigninWithFacebook extends React.Component {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         var token = result.credential.accessToken;
         // console.log(token);
+        // The signed-in user info.
         var user = result.user;
+        // console.log(user, "loginbtn");
+
         Toast({
           type: "success",
           title: "Signed in successfully",
           onClose: () => {
-            myProps.history.replace('/profile')
+            myProps.history.replace('/profile', { user: myProps.user })
+            window.location.reload();
+            /* UNCOMMENT BELOW LINES AFTER FINSHING THE PROFILE WORK */
             // if (user.createdAt === user.lastLoginAt) {
             //   myProps.history.replace('/profile')
             // } else {
@@ -35,9 +42,6 @@ class SigninWithFacebook extends React.Component {
             // }
           }
         });
-
-        // The signed-in user info.
-        // console.log(user, "loginbtn");
       })
       .catch(function (error) {
         // Handle Errors here.
@@ -58,7 +62,7 @@ class SigninWithFacebook extends React.Component {
         var credential = error.credential;
         Toast({
           type: "error",
-          title: `Credentials Error: ${credential}`
+          title: `Someting went wrong`
         });
         // ...
       });
