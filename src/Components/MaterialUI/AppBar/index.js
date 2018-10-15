@@ -5,6 +5,7 @@ import { AppBar, Toolbar, Typography, IconButton, SwipeableDrawer, List, Divider
 import MenuIcon from '@material-ui/icons/Menu';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import SigninWithFacebook from "../../SigninWithFacebook";
+import SignOut from "../../SignOut";
 import img from '../../../Images/bgImage.png'
 import * as CheckUser from "../../../Constants/CheckUser";
 
@@ -39,9 +40,12 @@ const styles = {
 };
 
 class SwipeableTemporaryDrawer extends React.Component {
-  state = {
-    left: false,
-  };
+  constructor() {
+    super()
+    this.state = {
+      left: false,
+    };
+  }
 
   toggleDrawer = (side, open) => () => {
     this.setState({
@@ -79,7 +83,6 @@ class SwipeableTemporaryDrawer extends React.Component {
 
     return (
       <div>
-
         <div className={classes.root}>
           <AppBar position="static" color="secondary">
             <Toolbar>
@@ -92,7 +95,7 @@ class SwipeableTemporaryDrawer extends React.Component {
                 Tinder Shinder
               </Typography>
               {
-                !user && <SigninWithFacebook {...this.props} />
+                !user ? <SigninWithFacebook {...this.props} /> : <SignOut {...this.props} />
               }
             </Toolbar>
           </AppBar>
