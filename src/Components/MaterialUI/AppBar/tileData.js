@@ -4,7 +4,7 @@ import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Home from "@material-ui/icons/HomeRounded";
-import Dashboard from "@material-ui/icons/DashboardRounded";
+import Face from "@material-ui/icons/FaceRounded";
 
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
@@ -13,19 +13,23 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ReportIcon from "@material-ui/icons/Report";
 
 export const mailFolderListItems = (
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <Home />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Dashboard />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
+  <div color="default">
+    <Link to="/home">
+      <ListItem button>
+        <ListItemIcon>
+          <Home />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItem>
+    </Link>
+    <Link to="/profile">
+      <ListItem button>
+        <ListItemIcon>
+          <Face />
+        </ListItemIcon>
+        <ListItemText primary="Profile" />
+      </ListItem>
+    </Link>
   </div>
 );
 
