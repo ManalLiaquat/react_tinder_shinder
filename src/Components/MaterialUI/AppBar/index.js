@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button, IconButton, SwipeableDrawer, List, Divider } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, IconButton, SwipeableDrawer, List, Divider, Avatar } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import SigninWithFacebook from "../../SigninWithFacebook";
-
+import img from '../../../Images/bgImage.png'
+import * as CheckUser from "../../../Constants/CheckUser";
 
 const styles = {
   root: {
@@ -24,6 +25,17 @@ const styles = {
   fullList: {
     width: 'auto',
   },
+  avatar: {
+    width: 60,
+    height: 60,
+    top: 60,
+    left: 10
+  },
+  drawerText: {
+    paddingLeft: '10px',
+    // backgroundColor: '#e0f2f111',
+    color: "white"
+  }
 };
 
 class SwipeableTemporaryDrawer extends React.Component {
@@ -37,12 +49,28 @@ class SwipeableTemporaryDrawer extends React.Component {
     });
   };
 
+  componentDidMount() {
+    CheckUser.isUser();
+  }
+
   render() {
     const { classes, user } = this.props;
     console.log(user, '****user');
+    console.log(this.props, '****props');
 
     const sideList = (
       <div className={classes.list}>
+        <div style={{ width: "100%", height: "200px", backgroundImage: `url(${img})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+          {user && <span>
+            <Avatar src={user.photoURL} className={classes.avatar} alt="Profile Picture" />
+            <br />
+            <br />
+            <br />
+            <Typography className={classes.drawerText} variant='overline'>{user.displayName}</Typography>
+            <Typography className={classes.drawerText} variant='body2'>{user.email}</Typography>
+          </span>}
+        </div>
+        <Divider />
         <List>{mailFolderListItems}</List>
         <Divider />
         <List>{otherMailFolderListItems}</List>
@@ -64,7 +92,7 @@ class SwipeableTemporaryDrawer extends React.Component {
                 Tinder Shinder
               </Typography>
               {
-                !user && <SigninWithFacebook />
+                !user && <SigninWithFacebook {...this.props} />
               }
             </Toolbar>
           </AppBar>
