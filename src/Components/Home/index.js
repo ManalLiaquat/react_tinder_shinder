@@ -2,18 +2,17 @@ import React, { Component } from "react";
 // import firebase from "../../Config/firebase";
 // import CardWrapper from "../UserCard";
 import GoogleMap from "../GoogleMap";
-import * as CheckUser from "../../Constants/CheckUser";
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      user: CheckUser.User
+      
     };
   }
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
     console.log(this.props, "****props home.js");
 
     return (
