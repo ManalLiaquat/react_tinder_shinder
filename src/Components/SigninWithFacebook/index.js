@@ -7,32 +7,30 @@ class SigninWithFacebook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      myProps: props
+
     }
     this.login = this.login.bind(this)
   }
 
   login() {
-    const { myProps } = this.state
     // console.log(myProps);
-
+    const props = this.props
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
       .then(function (result) {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        var token = result.credential.accessToken;
+        // var token = result.credential.accessToken;
         // console.log(token);
         // The signed-in user info.
         var user = result.user;
         // console.log(user, "loginbtn");
-
         Toast({
           type: "success",
           title: "Signed in successfully",
           onClose: () => {
-            myProps.history.replace('/profile', { user: myProps.user })
+            props.history.push('/profile')
             window.location.reload();
             /* UNCOMMENT BELOW LINES AFTER FINSHING THE PROFILE WORK */
             // if (user.createdAt === user.lastLoginAt) {
@@ -59,7 +57,7 @@ class SigninWithFacebook extends React.Component {
           title: `Warning: ${email}`
         });
         // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
+        // var credential = error.credential;
         Toast({
           type: "error",
           title: `Someting went wrong`
