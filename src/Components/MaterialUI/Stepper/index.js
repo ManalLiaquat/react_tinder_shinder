@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography } from "@material-ui/core";
+import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, FormGroup } from "@material-ui/core";
+import Refresh from "@material-ui/icons/Refresh";
 import Submit from "./Submit";
-import Step1 from './Submit/GetUserData/Step1'
+import Step1 from './Submit/GetUserData/Step1/'
+import Step2 from './Submit/GetUserData/Step2/'
+import Step3 from './Submit/GetUserData/Step3/'
+import Step4 from './Submit/GetUserData/Step4/'
 
 const styles = theme => ({
   root: {
@@ -26,26 +30,41 @@ function getName(nickName, phone) {
   getNameObj = { nickName, phone };
 }
 
+var getUrlsArray;
+function getUrls(array_urls) {
+  getUrlsArray = array_urls;
+}
+
+var getBeveragesObj;
+function getBeverages(array_time, array_beverages) {
+  getBeveragesObj = {
+    time: array_time,
+    beverages: array_beverages
+  }
+}
+
+var locationObj
+function getLocation(coordinates) {
+  locationObj = coordinates
+}
+
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <Step1 getNameAndPhone={getName} />;
     case 1:
-      return 'An ad group contains one or more ads which target a shared set of keywords.';
+      return <Step2 getImagesURL={getUrls} />;
     case 2:
-      return `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`;
+      return <Step3 getTimeAndBeverages={getBeverages} />;
     case 3:
-      return 'Render Maps';
+      return <Step4 getCurrentLocation={getLocation} />;
     default:
       return 'Unknown step';
   }
 }
 
 function getSteps() {
-  return ['Enter your nick name and phone number', 'Upload 3 images (necessary)', 'Select Beverages', 'Set your location'];
+  return ['Enter your nick name & phone number', 'Upload 3 images (necessary)', 'Set Meeting Time & Select Beverages', 'Set your location'];
 }
 
 class VerticalLinearStepper extends React.Component {
@@ -59,17 +78,17 @@ class VerticalLinearStepper extends React.Component {
     }));
   };
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  // handleReset = () => {
-  //   this.setState({
-  //     activeStep: 0,
-  //   });
+  // handleBack = () => {
+  //   this.setState(state => ({
+  //     activeStep: state.activeStep - 1,
+  //   }));
   // };
+
+  handleReset = () => {
+    this.setState({
+      activeStep: 0,
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -87,13 +106,13 @@ class VerticalLinearStepper extends React.Component {
                   <Typography>{getStepContent(index)}</Typography>
                   <div className={classes.actionsContainer}>
                     <div>
-                      <Button
+                      {/* <Button
                         disabled={activeStep === 0}
                         onClick={this.handleBack}
                         className={classes.button}
                       >
                         Back
-                      </Button>
+                      </Button> */}
                       <Button
                         variant="contained"
                         color="primary"
@@ -113,7 +132,10 @@ class VerticalLinearStepper extends React.Component {
           <Paper square elevation={0} className={classes.resetContainer}>
             <Typography>All steps completed - you&quot;re finished</Typography>
             {/* RENDER Submit COMPONENT */}
-            <Submit step1={getNameObj} />
+            <FormGroup row={true}>
+              <Button variant="contained" color="primary" onClick={this.handleReset}><Refresh /> Reset</Button>
+              <Submit step1={getNameObj} step2={getUrlsArray} step3={getBeveragesObj} step4={locationObj} />
+            </FormGroup>
           </Paper>
         )}
       </div>
