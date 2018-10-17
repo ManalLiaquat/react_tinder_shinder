@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { TextField } from "@material-ui/core";
+import Toast from '../../../../../../Constants/Toast'
 
 class Step1 extends Component {
   constructor(props) {
@@ -13,7 +14,9 @@ class Step1 extends Component {
   componentDidUpdate() {
     const { getNameAndPhone } = this.props
     const { nickName, phone } = this.state
-    getNameAndPhone(nickName, phone)
+    if (nickName && phone) {
+      getNameAndPhone(nickName, phone)
+    }
   }
 
   render() {
@@ -23,7 +26,7 @@ class Step1 extends Component {
         <TextField
           required
           id="standard-required"
-          label="NickName"
+          label="Nickname"
           margin="normal"
           onChange={e => { this.setState({ nickName: e.target.value }) }}
         />
@@ -33,8 +36,9 @@ class Step1 extends Component {
           id="standard-required"
           label="Phone Number"
           type="number"
+          value={this.state.phone}
           margin="normal"
-          onChange={e => { this.setState({ phone: e.target.value }) }}
+          onChange={e => { e.target.value.length < 12 ? this.setState({ phone: e.target.value }) : Toast({ type: 'warning', title: "Digits limit is 11" }) }}
         />
       </div>
     )
