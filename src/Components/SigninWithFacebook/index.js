@@ -30,14 +30,17 @@ class SigninWithFacebook extends React.Component {
           type: "success",
           title: "Signed in successfully",
           onClose: () => {
-            props.history.push('/profile')
-            window.location.reload();
+            // props.history.push('/profile')
+            // window.location.reload();
+
             /* UNCOMMENT BELOW LINES AFTER FINSHING THE PROFILE WORK */
-            // if (user.createdAt === user.lastLoginAt) {
-            //   myProps.history.replace('/profile')
-            // } else {
-            //   myProps.history.replace('/Home')
-            // }
+            if (user.createdAt === user.lastLoginAt) {
+              props.history.replace('/profile')
+              window.location.reload();
+            } else {
+              props.history.replace('/dashboard')
+              window.location.reload();
+            }
           }
         });
       })

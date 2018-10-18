@@ -59,8 +59,8 @@ class SwipeableTemporaryDrawer extends React.Component {
 
   render() {
     const { classes, user } = this.props;
-    console.log(user, '****user');
-    console.log(this.props, '****props');
+    // console.log(user, '****user');
+    // console.log(this.props, '****props');
 
     const sideList = (
       <div className={classes.list}>

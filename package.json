@@ -12,7 +12,8 @@
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.4",
-    "react-swipe-card": "^0.1.4",
+    "react-swing": "^2.0.1",
+    "react-swipe-deck": "^0.1.17",
     "sweetalert2": "^7.28.5",
     "sweetalert2-react-content": "^1.0.1"
   },
