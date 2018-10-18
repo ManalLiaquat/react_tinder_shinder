@@ -3,8 +3,8 @@
 import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import Home from "@material-ui/icons/HomeRounded";
-import Face from "@material-ui/icons/FaceRounded";
+import DashboardRounded from "@material-ui/icons/DashboardRounded";
+// import Face from "@material-ui/icons/FaceRounded";
 
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
@@ -14,22 +14,22 @@ import ReportIcon from "@material-ui/icons/Report";
 
 export const mailFolderListItems = (
   <div color="default">
-    <Link to="/home">
+    <Link to="/dashboard">
       <ListItem button>
         <ListItemIcon>
-          <Home />
+          <DashboardRounded />
         </ListItemIcon>
-        <ListItemText primary="Home" />
+        <ListItemText primary="Dashboard" />
       </ListItem>
     </Link>
-    <Link to="/profile">
+    {/* <Link to="/profile">
       <ListItem button>
         <ListItemIcon>
           <Face />
         </ListItemIcon>
         <ListItemText primary="Profile" />
       </ListItem>
-    </Link>
+    </Link> */}
   </div>
 );
 
