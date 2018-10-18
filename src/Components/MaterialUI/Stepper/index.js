@@ -134,7 +134,7 @@ class VerticalLinearStepper extends React.Component {
             {/* RENDER Submit COMPONENT */}
             <FormGroup row={true}>
               <Button variant="contained" color="primary" onClick={this.handleReset}><Refresh /> Reset</Button>
-              <Submit step1={getNameObj} step2={getUrlsArray} step3={getBeveragesObj} step4={locationObj} />
+              <Submit step1={getNameObj} step2={getUrlsArray} step3={getBeveragesObj} step4={locationObj} handleReset={this.handleReset} {...this.props} />
             </FormGroup>
           </Paper>
         )}
