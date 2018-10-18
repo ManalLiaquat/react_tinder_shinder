@@ -23,9 +23,6 @@ class GoogleMap extends Component {
 
   componentDidMount() {
     this.getPosition();
-  }
-
-  componentDidUpdate() {
     const { getCurrentLocation } = this.props
     const { coords } = this.state
     getCurrentLocation(coords)
