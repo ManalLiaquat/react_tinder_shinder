@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Typography, FormControlLabel, Checkbox, FormControl, InputLabel, Select, Input, Chip, MenuItem } from "@material-ui/core";
+import img1 from "../../../../../../Images/img1.jpg";
+import img2 from "../../../../../../Images/img2.jpg";
+import img3 from "../../../../../../Images/img3.jpg";
 
 const customStyle = {
   drinksImages: {
@@ -112,7 +115,7 @@ class Step1 extends Component {
             <FormControlLabel
               control={
                 <div>
-                  <img width="100%" height="100%" src="https://cafedeoro-rw.com/wp-content/uploads/2017/10/mocha.jpg" alt="" />
+                  <img width="100%" height="100%" src={img1} alt="" />
                   <Checkbox
                     checked={this.state.checkedA}
                     onChange={this.handleChange('checkedA')}
@@ -128,7 +131,7 @@ class Step1 extends Component {
             <FormControlLabel
               control={
                 <div>
-                  <img width="200px" height="200px" src="http://file.hstatic.net/1000258047/article/669973646-612x612_1024x1024.jpg" alt="" />
+                  <img width="200px" height="200px" src={img2} alt="" />
                   <Checkbox
                     checked={this.state.checkedB}
                     onChange={this.handleChange('checkedB')}
@@ -144,7 +147,7 @@ class Step1 extends Component {
             <FormControlLabel
               control={
                 <div>
-                  <img width="200px" height="200px" src="https://images.lecker.de/melon-crush-F3870901,id=1a21e330,b=lecker,w=590,h=442,cg=c.jpg" alt="" />
+                  <img width="200px" height="200px" src={img3} alt="" />
                   <Checkbox
                     checked={this.state.checkedC}
                     onChange={this.handleChange('checkedC')}
