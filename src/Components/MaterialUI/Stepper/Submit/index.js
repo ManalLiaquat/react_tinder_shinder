@@ -28,28 +28,20 @@ class Submit extends Component {
   }
 
   componentDidMount() {
-    const props = this.props
+    let { step1, step2, step3, step4 } = this.props
     let { userData } = this.state
 
-    for (let key1 in props.step1) {
-      if (props.step1[key1]) {
-        userData[key1] = props.step1[key1]
-      }
+    for (let key1 in step1) {
+      userData[key1] = step1[key1]
     }
 
-    if (props.step2.length === 3) {
-      userData.images = props.step2
+    userData.images = step2
+
+    for (let key2 in step3) {
+      userData[key2] = step3[key2]
     }
 
-    for (let key2 in props.step3) {
-      if (props.step3[key2].length) {
-        userData[key2] = props.step3[key2]
-      }
-    }
-
-    if (props.step4) {
-      userData.location = props.step4
-    }
+    userData.location = step4
 
     userData.uid = CheckUser.User.uid
 
