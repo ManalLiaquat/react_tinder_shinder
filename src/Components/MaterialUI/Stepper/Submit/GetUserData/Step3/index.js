@@ -3,6 +3,7 @@ import { Typography, FormControlLabel, Checkbox, FormControl, InputLabel, Select
 import img1 from "../../../../../../Images/img1.jpg";
 import img2 from "../../../../../../Images/img2.jpg";
 import img3 from "../../../../../../Images/img3.jpg";
+import Toast from "../../../../../../Constants/Toast";
 
 const customStyle = {
   drinksImages: {
@@ -52,7 +53,7 @@ class Step1 extends Component {
   };
 
   componentDidUpdate() {
-    const { getTimeAndBeverages } = this.props
+    const { getTimeAndBeverages, handleChangeState } = this.props
     const { checkedA, checkedB, checkedC, time } = this.state
     if (((checkedA || checkedB || checkedC) && time) || (checkedA && checkedB && checkedC && time)) {
       let beverages = [];//"Coffee", "Juice", "Cocktail"
@@ -62,6 +63,13 @@ class Step1 extends Component {
       checkedC && beverages.push('Cocktail');
 
       getTimeAndBeverages(time, beverages)
+      handleChangeState(3)
+    } else {
+      handleChangeState(2)
+      Toast({
+        type: "warning",
+        title: "Please select time and beverages"
+      })
     }
   }
 
