@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import firebase from "../../Config/firebase";
 import Wrapper from "../UserCard";
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Typography, Button } from "@material-ui/core";
-import firebase from "../../Config/firebase";
 
 class Dashboard extends Component {
   constructor(props) {
