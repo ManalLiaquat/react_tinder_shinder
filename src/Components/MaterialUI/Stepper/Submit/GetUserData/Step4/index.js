@@ -9,6 +9,7 @@ class GoogleMap extends Component {
     };
     this.updateCoords = this.updateCoords.bind(this);
     this.getPosition = this.getPosition.bind(this);
+    this.sendData = this.sendData.bind(this);
   }
 
   getPosition() {
@@ -21,11 +22,21 @@ class GoogleMap extends Component {
     this.setState({ coords: { latitude, longitude } });
   }
 
+  sendData() {
+    const { getCurrentLocation, handleChangeState } = this.props
+    const { coords } = this.state
+    handleChangeState(4)
+    getCurrentLocation(coords)
+  }
+
   componentDidMount() {
     this.getPosition();
-    const { getCurrentLocation } = this.props
     const { coords } = this.state
-    getCurrentLocation(coords)
+    coords && this.sendData()
+  }
+
+  componentDidUpdate() {
+    this.sendData()
   }
 
   render() {
