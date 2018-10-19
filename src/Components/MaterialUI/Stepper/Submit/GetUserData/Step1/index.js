@@ -12,10 +12,17 @@ class Step1 extends Component {
   }
 
   componentDidUpdate() {
-    const { getNameAndPhone } = this.props
+    const { getNameAndPhone, handleChangeState } = this.props
     const { nickName, phone } = this.state
     if (nickName && phone) {
       getNameAndPhone(nickName, phone)
+      handleChangeState(1)
+    } else {
+      handleChangeState(0)
+      Toast({
+        type: "warning",
+        title: "Please fill both fields"
+      })
     }
   }
 
