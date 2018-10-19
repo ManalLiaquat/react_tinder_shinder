@@ -48,16 +48,21 @@ function getLocation(coordinates) {
   locationObj = coordinates
 }
 
+var changeState;
+function handleChangeState(stepNumber) {
+  changeState = stepNumber
+}
+
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <Step1 getNameAndPhone={getName} />;
+      return <Step1 getNameAndPhone={getName} handleChangeState={handleChangeState} />;
     case 1:
-      return <Step2 getImagesURL={getUrls} />;
+      return <Step2 getImagesURL={getUrls} handleChangeState={handleChangeState} />;
     case 2:
-      return <Step3 getTimeAndBeverages={getBeverages} />;
+      return <Step3 getTimeAndBeverages={getBeverages} handleChangeState={handleChangeState} />;
     case 3:
-      return <Step4 getCurrentLocation={getLocation} />;
+      return <Step4 getCurrentLocation={getLocation} handleChangeState={handleChangeState} />;
     default:
       return 'Unknown step';
   }
@@ -74,7 +79,7 @@ class VerticalLinearStepper extends React.Component {
 
   handleNext = () => {
     this.setState(state => ({
-      activeStep: state.activeStep + 1,
+      activeStep: changeState ? changeState : changeState === 0 ? state.activeStep : state.activeStep + 1
     }));
   };
 
@@ -134,7 +139,7 @@ class VerticalLinearStepper extends React.Component {
             {/* RENDER Submit COMPONENT */}
             <FormGroup row={true}>
               <Button variant="contained" color="primary" onClick={this.handleReset}><Refresh /> Reset</Button>
-              <Submit step1={getNameObj} step2={getUrlsArray} step3={getBeveragesObj} step4={locationObj} handleReset={this.handleReset} {...this.props} />
+              <Submit step1={getNameObj} step2={getUrlsArray} step3={getBeveragesObj} step4={locationObj} {...this.props} />
             </FormGroup>
           </Paper>
         )}
