@@ -34,12 +34,15 @@ class SigninWithFacebook extends React.Component {
             // window.location.reload();
 
             /* UNCOMMENT BELOW LINES AFTER FINSHING THE PROFILE WORK */
-            if (user.createdAt === user.lastLoginAt) {
+            if (user.toJSON().createdAt === user.toJSON().lastLoginAt) {
               props.history.replace('/profile')
               window.location.reload();
+              console.log(props);
+
             } else {
               props.history.replace('/dashboard')
               window.location.reload();
+              console.log(props);
             }
           }
         });
