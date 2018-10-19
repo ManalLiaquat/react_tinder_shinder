@@ -59,19 +59,20 @@ class Step2 extends Component {
   };
 
   componentDidUpdate() {
-    const { getImagesURL } = this.props;
+    const { getImagesURL, handleChangeState } = this.props;
     let { avatarURL1, avatarURL2, avatarURL3 } = this.state
 
     if (avatarURL1 && avatarURL2 && avatarURL3) {
       let imgUrls = [avatarURL1, avatarURL2, avatarURL3]
       getImagesURL(imgUrls)
+      handleChangeState(2)
+    } else {
+      handleChangeState(1)
+      Toast({
+        type: "warning",
+        title: "Please select all (3) images"
+      })
     }
-    // else {
-    //   Toast({
-    //     type: "error",
-    //     title: "Please upload all (3) images"
-    //   })
-    // }
   }
 
   render() {
