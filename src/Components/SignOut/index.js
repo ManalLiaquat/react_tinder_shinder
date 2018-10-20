@@ -17,12 +17,12 @@ class SignOut extends React.Component {
   logout() {
     const { myProps } = this.state
     firebase.auth().signOut().then(() => {
+      localStorage.setItem("user", null)
       Toast({
         type: "success",
         title: "You are logged out"
       })
       myProps.history.replace('/');
-      window.location.reload();
     }).catch((err) => {
       Toast({
         type: "error",
