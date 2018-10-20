@@ -56,11 +56,13 @@ class SwipeableTemporaryDrawer extends React.Component {
   componentDidMount() {
     CheckUser.isUser();
   }
+  componentDidUpdate() {
+    CheckUser.isUser();
+  }
 
   render() {
-    const { classes, user } = this.props;
-    // console.log(user, '****user');
-    // console.log(this.props, '****props');
+    const { classes } = this.props;
+    let user = JSON.parse(localStorage.getItem('user'))
 
     const sideList = (
       <div className={classes.list}>
@@ -84,6 +86,7 @@ class SwipeableTemporaryDrawer extends React.Component {
     return (
       <div>
         <div className={classes.root}>
+
           <AppBar position="static" color="secondary">
             <Toolbar>
               {
