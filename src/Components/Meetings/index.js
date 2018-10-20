@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Typography } from "@material-ui/core";
 import firebase from "../../Config/firebase";
 import Wrapper from "../UserCard";
+// import { } from "react-c";
 
 class Meetings extends Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class Meetings extends Component {
     firebase.database().ref('/user_data').on("child_added", data => {
       let users = data.val();
       console.log(users);
-
     })
   }
 

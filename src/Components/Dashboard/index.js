@@ -19,7 +19,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    // const { user } = this.props;
     // console.group("DASHBOARD")
     // console.log(this.props, "****props");
     // console.groupEnd()
