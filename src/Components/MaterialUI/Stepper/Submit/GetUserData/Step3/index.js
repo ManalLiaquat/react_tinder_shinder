@@ -33,7 +33,7 @@ const customStyle = {
   }
 }
 
-class Step1 extends Component {
+class Step3 extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -174,4 +174,4 @@ class Step1 extends Component {
 
 }
 
-export default Step1;
+export default Step3;

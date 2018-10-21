@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MyMapComponent from "./GetMapData";
 
-class GoogleMap extends Component {
+class Step4 extends Component {
   constructor() {
     super();
     this.state = {
@@ -57,4 +57,4 @@ class GoogleMap extends Component {
   }
 }
 
-export default GoogleMap;
+export default Step4;
