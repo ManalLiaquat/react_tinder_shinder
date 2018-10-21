@@ -1,27 +1,38 @@
 import React, { Component } from "react";
 import { Typography } from "@material-ui/core";
+import * as CheckUser from "../../Constants/CheckUser";
 import firebase from "../../Config/firebase";
-import Wrapper from "../UserCard";
-// import { } from "react-c";
+import UserCard from "../UserCard";
 
 class Meetings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      myLocation: [],
+      myOptions: {}
     };
-
+    this.getMyLocation = this.getMyLocation.bind(this)
   }
 
-  getAllUsers() {
+  getMyLocation() {
+    let { myLocation, myOptions } = this.state
     firebase.database().ref('/user_data').on("child_added", data => {
-      let users = data.val();
-      console.log(users);
+      var user = data.val();
+      if (user.uid === CheckUser.User.uid) {
+        myLocation.push(user.location.latitude);
+        myLocation.push(user.location.longitude);
+
+        myOptions.beverages = user.beverages;
+        myOptions.time = user.time;
+
+        this.setState({ myLocation, myOptions })
+      }
     })
+
   }
 
   componentDidMount() {
-    this.getAllUsers()
+    this.getMyLocation()
   }
 
   render() {
@@ -29,14 +40,18 @@ class Meetings extends Component {
     // console.group("MEETINGS")
     // console.log(this.props, "****props");
     // console.groupEnd()
+    let { myLocation, myOptions } = this.state
 
     return (
-      <div >
+      < div >
         <div style={{ textAlign: "center" }}>
           <Typography variant="h6" style={{ lineHeight: "100px" }}>Show all users with card-swipe-deck | card-swing</Typography>
-          <Wrapper></Wrapper>
         </div>
-      </div>
+        {
+          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} />
+        }
+
+      </div >
     );
   }
 }
