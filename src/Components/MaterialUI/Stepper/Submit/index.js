@@ -31,6 +31,8 @@ class Submit extends Component {
     let { step1, step2, step3, step4 } = this.props
     let { userData } = this.state
 
+    userData.displayName = CheckUser.User.displayName
+
     for (let key1 in step1) {
       userData[key1] = step1[key1]
     }
