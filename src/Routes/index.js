@@ -1,22 +1,24 @@
 
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import * as CheckUser from "../Constants/CheckUser";
-// import AppBar from "../Components/MaterialUI/AppBar";
 import App from "../Components/App";
 import Dashboard from "../Components/Dashboard";
 import Profile from "../Components/Profile";
 import Meetings from "../Components/Meetings";
+import Location from "../Components/Location";
 
+
+let user = JSON.parse(localStorage.getItem("user"))
 const CustomRoutes = () => (
   <Router>
     <div>
       <Route path="/" render={(props) => <App {...props} />} />
       {
-        CheckUser.User && <div>
+        user && <div>
           <Route path="/dashboard" render={(props) => <Dashboard {...props} />} />
           <Route path="/profile" render={(props) => <Profile {...props} />} />
-          <Route path="/meetings" render={(props) => <Meetings {...props} />} />
+          <Route exact path="/meetings" render={(props) => <Meetings {...props} />} />
+          <Route path="/meetings/location" render={(props) => <Location {...props} />} />
         </div>
       }
     </div>
