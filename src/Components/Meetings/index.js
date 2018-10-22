@@ -48,7 +48,7 @@ class Meetings extends Component {
           <Typography variant="h6" style={{ lineHeight: "100px" }}>Show all users with card-swipe-deck | card-swing</Typography>
         </div>
         {
-          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} />
+          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} {...this.props} />
         }
 
       </div >
