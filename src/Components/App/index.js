@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppBar from '../MaterialUI/AppBar';
+
+// let user = JSON.parse(localStorage.getItem('user'))
 
 const App = (props) => {
   return (

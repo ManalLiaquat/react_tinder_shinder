@@ -11,8 +11,9 @@ class Location extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      friendObj: props.location.state.friend,
+      friendProfileObj: props.location.state.friendProfileObj,
       myLocation: props.location.state.myLocation,
+      myProfileObj: props.location.state.myProfileObj,
       searchTerm: '',
       places: []
     }
@@ -22,8 +23,8 @@ class Location extends Component {
   }
 
   chooseLocation(placeObj) {
-    console.log(placeObj);
-
+    const { friendProfileObj, myProfileObj } = this.state
+    this.props.history.push('/meetings/dateandtime', { myProfileObj, friendProfileObj, placeObj })
   }
 
   handleSearch() {
@@ -38,7 +39,7 @@ class Location extends Component {
     places = []
     exploreApi(myLocation).then(data => {
       data.response.groups[0].items.map(place => {
-        places.push(place.venue)
+        return places.push(place.venue)
       })
       this.setState({ places })
     });
@@ -67,8 +68,8 @@ class Location extends Component {
         </Grid>
         <br />
         <Grid container spacing={24} direction="row" justify="center" alignItems="center">
-          <Typography variant="overline" color="textSecondary" align="center">...Choose Location...</Typography>
           <Grid xs={10}>
+            <Typography variant="overline" color="textSecondary" align="center">...Choose Location...</Typography>
             <Paper>
               <Button variant="flat" color="default" onClick={this.getNearByPlaces}>Near By Places</Button>
               <br />

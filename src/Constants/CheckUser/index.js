@@ -12,7 +12,6 @@ const isUser = () => {
   });
 };
 
-const User = JSON.parse(localStorage.getItem("user"));
-
+let User = JSON.parse(localStorage.getItem("user"));
 
 export { isUser, User };

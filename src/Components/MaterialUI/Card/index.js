@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-class RecipeReviewCard extends React.Component {
+class MUICard extends React.Component {
 
   render() {
     const { classes, images, nickName } = this.props;
@@ -90,8 +90,8 @@ class RecipeReviewCard extends React.Component {
   }
 }
 
-RecipeReviewCard.propTypes = {
+MUICard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RecipeReviewCard);
+export default withStyles(styles)(MUICard);
