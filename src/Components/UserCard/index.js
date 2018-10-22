@@ -4,15 +4,7 @@ import MUICard from "../MaterialUI/Card";
 import firebase from "../../Config/firebase";
 import * as CheckUser from "../../Constants/CheckUser";
 import geofire from "geofire";
-
-import img1 from "../../Images/img1.jpg";
-import img2 from "../../Images/img2.jpg";
-import img3 from "../../Images/img3.jpg";
-
-
-const images = [img1, img2, img3];
-
-const data = ["user one obj", " user two obj", "user three obj"];
+import swal from "sweetalert2";
 
 class UserCard extends Component {
   constructor(props) {
@@ -43,7 +35,6 @@ class UserCard extends Component {
         }
       }
     })
-
   }
 
   componentDidMount() {
@@ -51,21 +42,39 @@ class UserCard extends Component {
   }
 
   action = msg => {
-    // console.log(msg);
+    console.log(msg);
   };
+
+  onSwipeRight(friend) {
+    swal({
+      title: `Hey ${CheckUser.User.displayName}!`,
+      html: `<img src=${friend.images[0]} height="100px" width="100px" />
+              <br/>Do you want to meet <i>${friend.displayName}</i>`,
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.value) {
+        this.props.history.push('/meetings/location', { friend, myLocation: this.state.myLocation })
+      } else {
+        this.getAllUsers()
+      }
+    })
+  }
 
   render() {
     let { allUsers } = this.state
-    // console.log(allUsers);
 
     return (
       <Cards onEnd={this.action("end")} className="root-master">
         {allUsers.map(item => (
           <Card
             onSwipeLeft={() => { this.action("swipe left") }}
-            onSwipeRight={() => { this.action("swipe right") }}
+            onSwipeRight={() => { this.onSwipeRight(item) }}
           >
-            <MUICard images={item.images} nickName={item.nickName}>
+            <MUICard images={item.images} nickName={item.nickName} >
               <p>{item.displayName}</p>
             </MUICard>
           </Card>
