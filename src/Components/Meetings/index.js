@@ -9,7 +9,8 @@ class Meetings extends Component {
     super(props);
     this.state = {
       myLocation: [],
-      myOptions: {}
+      myOptions: {},
+      myProfileObj: null
     };
     this.getMyLocation = this.getMyLocation.bind(this)
   }
@@ -25,7 +26,7 @@ class Meetings extends Component {
         myOptions.beverages = user.beverages;
         myOptions.time = user.time;
 
-        this.setState({ myLocation, myOptions })
+        this.setState({ myLocation, myOptions, myProfileObj: { ...user } })
       }
     })
 
@@ -36,11 +37,7 @@ class Meetings extends Component {
   }
 
   render() {
-    // const { user } = this.props;
-    // console.group("MEETINGS")
-    // console.log(this.props, "****props");
-    // console.groupEnd()
-    let { myLocation, myOptions } = this.state
+    let { myLocation, myOptions, myProfileObj } = this.state
 
     return (
       < div >
@@ -48,9 +45,8 @@ class Meetings extends Component {
           <Typography variant="h6" style={{ lineHeight: "100px" }}>Show all users with card-swipe-deck | card-swing</Typography>
         </div>
         {
-          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} {...this.props} />
+          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} myProfileObj={myProfileObj} {...this.props} />
         }
-
       </div >
     );
   }
