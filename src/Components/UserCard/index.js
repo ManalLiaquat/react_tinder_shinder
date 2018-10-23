@@ -12,7 +12,8 @@ class UserCard extends Component {
     this.state = {
       allUsers: [],
       myLocation: props.myLocation,
-      myOptions: props.myOptions
+      myOptions: props.myOptions,
+      myProfileObj: props.myProfileObj
     }
   }
 
@@ -45,11 +46,12 @@ class UserCard extends Component {
     console.log(msg);
   };
 
-  onSwipeRight(friend) {
+  onSwipeRight(friendProfileObj) {
+    let { myLocation, myProfileObj } = this.state
     swal({
       title: `Hey ${CheckUser.User.displayName}!`,
-      html: `<img src=${friend.images[0]} height="100px" width="100px" />
-              <br/>Do you want to meet <i>${friend.displayName}</i>`,
+      html: `<img src=${friendProfileObj.images[0]} height="100px" width="100px" />
+              <br/>Do you want to meet <i>${friendProfileObj.displayName}</i>`,
       type: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -57,7 +59,7 @@ class UserCard extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.value) {
-        this.props.history.push('/meetings/location', { friend, myLocation: this.state.myLocation })
+        this.props.history.push('/meetings/location', { friendProfileObj, myLocation, myProfileObj })
       } else {
         this.getAllUsers()
       }
