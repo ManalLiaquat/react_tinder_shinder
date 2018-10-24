@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import firebase from "../../Config/firebase";
 import Toast from "../../Constants/Toast";
+import { askForPermissioToReceiveNotifications } from "../../push-notification";
 
 class SigninWithFacebook extends React.Component {
   constructor(props) {
@@ -26,23 +27,17 @@ class SigninWithFacebook extends React.Component {
         // The signed-in user info.
         var user = result.user;
         // console.log(user, "loginbtn");
+
+        askForPermissioToReceiveNotifications()
+
         Toast({
           type: "success",
           title: "Signed in successfully",
           onClose: () => {
-            // props.history.push('/profile')
-            // window.location.reload();
-
-            /* UNCOMMENT BELOW LINES AFTER FINSHING THE PROFILE WORK */
             if (user.toJSON().createdAt === user.toJSON().lastLoginAt) {
               props.history.replace('/profile')
-              // window.location.reload();
-              console.log(props);
-
             } else {
               props.history.replace('/dashboard')
-              // window.location.reload();
-              console.log(props);
             }
           }
         });
