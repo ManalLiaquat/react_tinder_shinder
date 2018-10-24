@@ -24,7 +24,12 @@ class Location extends Component {
 
   chooseLocation(placeObj) {
     const { friendProfileObj, myProfileObj } = this.state
-    this.props.history.push('/meetings/dateandtime', { myProfileObj, friendProfileObj, placeObj })
+    let placeInfo = {
+      name: placeObj.name,
+      location: placeObj.location,
+      id: placeObj.id
+    }
+    this.props.history.push('/meetings/dateandtime', { myProfileObj, friendProfileObj, placeInfo })
   }
 
   handleSearch() {
