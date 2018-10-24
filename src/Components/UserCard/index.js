@@ -15,10 +15,38 @@ class UserCard extends Component {
       myOptions: props.myOptions,
       myProfileObj: props.myProfileObj
     }
+    this.onSwipeRight = this.onSwipeRight.bind(this)
+  }
+
+  action = msg => {
+    console.log(msg);
+  };
+
+  onSwipeRight(friendProfileObj) {
+    let { myLocation, myProfileObj } = this.state
+    swal({
+      title: `Hey ${CheckUser.User.displayName}!`,
+      html: `<img src=${friendProfileObj.images[0]} height="100px" width="100px" />
+              <br/>Do you want to meet <i>${friendProfileObj.displayName}</i>`,
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.value) {
+        this.props.history.push('/meetings/location', { friendProfileObj, myLocation, myProfileObj })
+      } else {
+        // this.getAllUsers()
+        this.props.history.push('/meetings')
+      }
+    })
   }
 
   getAllUsers() {
     let { allUsers, myLocation, myOptions } = this.state
+
+    this.setState({ allUsers: [] })
 
     firebase.database().ref('/user_data').on("child_added", data => {
       let user = data.val();
@@ -42,30 +70,6 @@ class UserCard extends Component {
     this.getAllUsers()
   }
 
-  action = msg => {
-    console.log(msg);
-  };
-
-  onSwipeRight(friendProfileObj) {
-    let { myLocation, myProfileObj } = this.state
-    swal({
-      title: `Hey ${CheckUser.User.displayName}!`,
-      html: `<img src=${friendProfileObj.images[0]} height="100px" width="100px" />
-              <br/>Do you want to meet <i>${friendProfileObj.displayName}</i>`,
-      type: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes'
-    }).then((result) => {
-      if (result.value) {
-        this.props.history.push('/meetings/location', { friendProfileObj, myLocation, myProfileObj })
-      } else {
-        this.getAllUsers()
-      }
-    })
-  }
-
   render() {
     let { allUsers } = this.state
 
@@ -76,7 +80,7 @@ class UserCard extends Component {
             onSwipeLeft={() => { this.action("swipe left") }}
             onSwipeRight={() => { this.onSwipeRight(item) }}
           >
-            <MUICard images={item.images} nickName={item.nickName} >
+            <MUICard item={item} onSwipeRight={this.onSwipeRight} >
               <p>{item.displayName}</p>
             </MUICard>
           </Card>
