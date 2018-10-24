@@ -31,7 +31,7 @@ const styles = theme => ({
 class MUICard extends React.Component {
 
   render() {
-    const { classes, images, nickName } = this.props;
+    const { classes, item, onSwipeRight } = this.props;
 
     return (
       <div style={{ margin: "0px auto" }}>
@@ -44,7 +44,7 @@ class MUICard extends React.Component {
             emulateTouch={true}
             autoPlay={true}>
             {
-              images.map(path => (
+              item.images.map(path => (
                 <div>
                   <img src={path} height="300px" alt="userImg" />
                 </div>
@@ -69,12 +69,12 @@ class MUICard extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid direction="row" justify="center" alignItems="center">
-                  <Typography variant="caption" className={classes.displayName}>{nickName}</Typography>
+                  <Typography variant="caption" className={classes.displayName}>{item.nickName}</Typography>
                 </Grid>
               </CardContent>
             </Grid>
             <Grid item xs={2}>
-              <IconButton aria-label="Share">
+              <IconButton aria-label="Share" onClick={() => { onSwipeRight(item) }}>
                 <CheckIcon />
               </IconButton>
             </Grid>
