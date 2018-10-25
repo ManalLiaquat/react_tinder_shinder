@@ -40,14 +40,11 @@ class Meetings extends Component {
     let { myLocation, myOptions, myProfileObj } = this.state
 
     return (
-      < div >
-        <div style={{ textAlign: "center" }}>
-          <Typography variant="h6" style={{ lineHeight: "100px" }}>Show all users with card-swipe-deck | card-swing</Typography>
-        </div>
+      <div>
         {
           myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} myProfileObj={myProfileObj} {...this.props} />
         }
-      </div >
+      </div>
     );
   }
 }

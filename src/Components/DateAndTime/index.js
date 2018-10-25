@@ -3,10 +3,10 @@ import { Typography, Paper, Button } from "@material-ui/core";
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import { InlineDateTimePicker } from 'material-ui-pickers/DateTimePicker';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import firebase from "../../Config/firebase";
+import firebase from "../../Config/firebase"
+import * as CheckUser from "../../Constants/CheckUser";
 import swal from "sweetalert2";
 import $ from "jquery";
-
 
 class DateAndTime extends Component {
   constructor(props) {
@@ -82,24 +82,27 @@ class DateAndTime extends Component {
   }
 
   render() {
+    let user = CheckUser.User;
     return (
       <div style={{ textAlign: "center", padding: "20px" }}>
-        <Paper style={{ minHeight: "550px" }}>
-          <Typography variant="overline" color="textSecondary">...Date and Time...</Typography>
-          <br />
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <InlineDateTimePicker
-              invalidLabel="Select data and time"
-              value={this.state.dateTime}
-              disablePast={true}
-              onChange={(dateTime) => { this.setState({ dateTime: dateTime._d }) }}
-            />
-          </MuiPickersUtilsProvider>
-          <br />
-          <br />
-          <Button variant="raised" color="primary" onClick={this.prompt}>Send Request</Button>
-          <br />
-        </Paper>
+        {
+          user && <Paper style={{ minHeight: "550px" }}>
+            <Typography variant="overline" color="textSecondary">...Date and Time...</Typography>
+            <br />
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <InlineDateTimePicker
+                invalidLabel="Select data and time"
+                value={this.state.dateTime}
+                disablePast={true}
+                onChange={(dateTime) => { this.setState({ dateTime: dateTime._d }) }}
+              />
+            </MuiPickersUtilsProvider>
+            <br />
+            <br />
+            <Button variant="raised" color="primary" onClick={this.prompt}>Send Request</Button>
+            <br />
+          </Paper>
+        }
       </div>
     )
   }

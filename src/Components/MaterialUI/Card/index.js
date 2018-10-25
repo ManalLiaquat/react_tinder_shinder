@@ -51,36 +51,36 @@ class MUICard extends React.Component {
               ))
             }
           </Carousel>
-          <Grid container
-            direction="row"
-            justify="center"
-            alignItems="center">
-
-            <Grid item xs={2}>
-              <IconButton aria-label="Add to favorites">
-                <CloseIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={8}>
-              <CardContent>
-                <Grid direction="row" justify="center" alignItems="center">
-                  <Typography variant="caption" className={classes.displayName}>
-                    <b>{this.props.children}</b>
-                  </Typography>
-                </Grid>
-                <Grid direction="row" justify="center" alignItems="center">
-                  <Typography variant="caption" className={classes.displayName}>{item.nickName}</Typography>
-                </Grid>
-              </CardContent>
-            </Grid>
-            <Grid item xs={2}>
-              <IconButton aria-label="Share" onClick={() => { onSwipeRight(item) }}>
-                <CheckIcon />
-              </IconButton>
-            </Grid>
-
-          </Grid>
           <CardActions className={classes.actions} disableActionSpacing>
+            <Grid container
+              direction="row"
+              justify="center"
+              alignItems="center">
+
+              <Grid item xs={2}>
+                <IconButton aria-label="Remove Card">
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
+              <Grid item xs={8}>
+                <CardContent>
+                  <Grid direction="row" justify="center" alignItems="center">
+                    <Typography variant="caption" className={classes.displayName}>
+                      <b>{this.props.children}</b>
+                    </Typography>
+                  </Grid>
+                  <Grid direction="row" justify="center" alignItems="center">
+                    <Typography variant="caption" className={classes.displayName}>{item.nickName}</Typography>
+                  </Grid>
+                </CardContent>
+              </Grid>
+              <Grid item xs={2}>
+                <IconButton aria-label="Meet Person" onClick={() => { onSwipeRight(item) }}>
+                  <CheckIcon />
+                </IconButton>
+              </Grid>
+
+            </Grid>
 
 
           </CardActions>
