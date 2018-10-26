@@ -17,11 +17,12 @@ class Meetings extends Component {
 
   getMyLocation() {
     let { myLocation, myOptions } = this.state
+    let currentUser = JSON.parse(localStorage.getItem("user"));
     firebase.database().ref('/user_data').on("child_added", data => {
       var user = data.val();
-      if (user.uid === CheckUser.User.uid) {
-        myLocation.push(user.location.latitude);
-        myLocation.push(user.location.longitude);
+      if (user.uid === currentUser.uid) {
+        myLocation.push(Number(user.location.latitude));
+        myLocation.push(Number(user.location.longitude));
 
         myOptions.beverages = user.beverages;
         myOptions.time = user.time;
