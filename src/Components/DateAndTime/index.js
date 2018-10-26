@@ -40,7 +40,7 @@ class DateAndTime extends Component {
                   dataType: 'json',
                   data: JSON.stringify({
                     "to": token.key, "notification": {
-                      "title": `New Request From ${meetingData.friendProfileObj.nickName}`,
+                      "title": `New Request From ${meetingData.myProfileObj.nickName}`,
                       "body": "You have a new meeting request",
                       "icon": "https://firebasestorage.googleapis.com/v0/b/tinder-shinder.appspot.com/o/Notifications.png?alt=media&token=76541c3b-4909-4d63-90d5-1fc00ff5fff4", //Photo of sender
                       "click_action": `https://tinder-shinder.firebaseapp.com/dashboard`
@@ -82,7 +82,7 @@ class DateAndTime extends Component {
   }
 
   render() {
-    let user = CheckUser.User;
+    let user = JSON.parse(localStorage.getItem("user"));
     return (
       <div style={{ textAlign: "center", padding: "20px" }}>
         {
