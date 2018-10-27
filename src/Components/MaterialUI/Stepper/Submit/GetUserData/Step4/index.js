@@ -5,7 +5,7 @@ class Step4 extends Component {
   constructor() {
     super();
     this.state = {
-      coords: { latitude: 24.8830931, longitude: 67.0685517 }
+      coords: { latitude: 24.88385439601565, longitude: 67.04778058545844 }
     };
     this.updateCoords = this.updateCoords.bind(this);
     this.getPosition = this.getPosition.bind(this);
@@ -14,7 +14,12 @@ class Step4 extends Component {
 
   getPosition() {
     navigator.geolocation.getCurrentPosition(res => {
-      this.setState({ coords: res.coords });
+      this.setState({
+        coords: {
+          latitude: res.coords.latitude,
+          longitude: res.coords.longitude
+        }
+      });
     });
   }
 
@@ -32,11 +37,13 @@ class Step4 extends Component {
   componentDidMount() {
     this.getPosition();
     const { coords } = this.state
-    coords && this.sendData()
+    coords.latitude && this.sendData()
   }
 
   componentDidUpdate() {
-    this.sendData()
+    // this.sendData()
+    const { coords } = this.state
+    coords.latitude && this.sendData()
   }
 
   render() {
