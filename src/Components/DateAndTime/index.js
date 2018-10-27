@@ -23,7 +23,7 @@ class DateAndTime extends Component {
     const { meetingData, dateTime } = this.state
     if (meetingData && dateTime) {
       meetingData.dateAndTime = dateTime.getTime()
-      meetingData.isRequestAccepted = false
+      meetingData.status = "PENDING"
 
       firebase.database().ref(`/meetings/${meetingData.myProfileObj.uid}/${meetingData.friendProfileObj.uid}/`).set(meetingData)
         .then(() => {
@@ -35,15 +35,15 @@ class DateAndTime extends Component {
                 console.log(token.key)
                 $.ajax({
                   type: 'POST', url: "https://fcm.googleapis.com/fcm/send",
-                  headers: { Authorization: 'key=AIzaSyAjIIjPScGE9DOhslt3VSt57hj4GpZvCXc' },
+                  headers: { Authorization: 'key=AIzaSyBrrOsrvThKXpEt-1ZoAP9DhpwRs1B5l4E' },
                   contentType: 'application/json',
                   dataType: 'json',
                   data: JSON.stringify({
                     "to": token.key, "notification": {
                       "title": `New Request From ${meetingData.myProfileObj.nickName}`,
                       "body": "You have a new meeting request",
-                      "icon": "https://firebasestorage.googleapis.com/v0/b/tinder-shinder.appspot.com/o/Notifications.png?alt=media&token=76541c3b-4909-4d63-90d5-1fc00ff5fff4", //Photo of sender
-                      "click_action": `https://tinder-shinder.firebaseapp.com/dashboard`
+                      "icon": "https://firebasestorage.googleapis.com/v0/b/tinder-shinder-2.appspot.com/o/Notifications.png?alt=media&token=b4c86061-9644-4faa-a316-6461be0fe421", //Photo of sender
+                      "click_action": `https://tinder-shinder-2.firebaseapp.com/dashboard`
                     }
                   }),
                   success: function (response) {

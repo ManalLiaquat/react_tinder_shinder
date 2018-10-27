@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "tinder-shinder"
+    "default": "tinder-shinder",
+    "new project": "tinder-shinder-2"
   }
 }
