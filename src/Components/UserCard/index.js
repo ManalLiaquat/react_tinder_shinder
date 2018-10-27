@@ -16,6 +16,7 @@ class UserCard extends Component {
       currentUser: JSON.parse(localStorage.getItem("user"))
     }
     this.onSwipeRight = this.onSwipeRight.bind(this)
+    this.removeCard = this.removeCard.bind(this)
   }
 
   action = msg => {
@@ -64,6 +65,12 @@ class UserCard extends Component {
     })
   }
 
+  removeCard(index) {
+    let { allUsers } = this.state
+    allUsers.splice(index, 1)
+    this.setState({ allUsers })
+  }
+
   componentDidMount() {
     this.getAllUsers()
   }
@@ -73,12 +80,12 @@ class UserCard extends Component {
 
     return (
       <Cards onEnd={this.action("end")} className="root-master">
-        {allUsers.map(item => (
+        {allUsers.map((item, index) => (
           <Card
-            onSwipeLeft={() => { this.action("swipe left") }}
+            onSwipeLeft={() => { this.removeCard(index) }}
             onSwipeRight={() => { this.onSwipeRight(item) }}
           >
-            <MUICard item={item} onSwipeRight={this.onSwipeRight} >
+            <MUICard item={item} index={index} onSwipeRight={this.onSwipeRight} removeCard={this.removeCard} >
               <p>{item.displayName}</p>
             </MUICard>
           </Card>
