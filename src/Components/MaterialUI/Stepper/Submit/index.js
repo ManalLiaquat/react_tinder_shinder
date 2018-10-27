@@ -5,6 +5,8 @@ import firebase from "../../../../Config/firebase";
 import * as CheckUser from "../../../../Constants/CheckUser";
 import Toast from "../../../../Constants/Toast";
 
+var currentUser = JSON.parse(localStorage.getItem("user"))
+
 class Submit extends Component {
   constructor(props) {
     super(props)
@@ -16,7 +18,7 @@ class Submit extends Component {
 
   submit() {
     const { userData } = this.state
-    firebase.database().ref(`/user_data/${CheckUser.User.uid}`).set(userData).then(() => {
+    firebase.database().ref(`/user_data/${currentUser.uid}`).set(userData).then(() => {
       Toast({
         type: 'success',
         title: "Successfully submitted your profile",
@@ -31,7 +33,7 @@ class Submit extends Component {
     let { step1, step2, step3, step4 } = this.props
     let { userData } = this.state
 
-    userData.displayName = CheckUser.User.displayName
+    userData.displayName = currentUser.displayName
 
     for (let key1 in step1) {
       userData[key1] = step1[key1]
@@ -45,7 +47,7 @@ class Submit extends Component {
 
     userData.location = step4
 
-    userData.uid = CheckUser.User.uid
+    userData.uid = currentUser.uid
 
     this.setState({ userData })
   }
