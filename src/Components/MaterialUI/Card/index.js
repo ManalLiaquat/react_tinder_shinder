@@ -31,7 +31,7 @@ const styles = theme => ({
 class MUICard extends React.Component {
 
   render() {
-    const { classes, item, onSwipeRight } = this.props;
+    const { classes, item, onSwipeRight, removeCard, index } = this.props;
 
     return (
       <div style={{ margin: "0px auto" }}>
@@ -58,7 +58,7 @@ class MUICard extends React.Component {
               alignItems="center">
 
               <Grid item xs={2}>
-                <IconButton aria-label="Remove Card">
+                <IconButton aria-label="Remove Card" onClick={() => { removeCard(index) }}>
                   <CloseIcon />
                 </IconButton>
               </Grid>
