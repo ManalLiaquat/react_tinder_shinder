@@ -34,9 +34,10 @@ class SigninWithFacebook extends React.Component {
           type: "success",
           title: "Signed in successfully",
           onClose: () => {
-            firebase.database().ref('/user_data').on("child_added", snapshot => {
+            firebase.database().ref('/user_data').once("value", snapshot => {
               let data = snapshot.val();
-              if ((user.toJSON().createdAt === user.toJSON().lastLoginAt) || (data.uid !== user.toJSON().uid)) {
+              var array = Object.keys(data)
+              if ((user.toJSON().createdAt === user.toJSON().lastLoginAt) || !(array.includes(user.toJSON().uid))) {
                 props.history.replace('/profile')
               }
               else {
