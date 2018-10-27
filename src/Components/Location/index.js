@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Grid, Paper, Typography, TextField, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton } from '@material-ui/core'
+import { Grid, Paper, Typography, TextField, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton, Modal } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import PlaceIcon from '@material-ui/icons/Place';
-import AddLocationIcon from '@material-ui/icons/AddLocation';
+import ForwardIcon from '@material-ui/icons/ArrowRight';
+import DirectionsIcon from '@material-ui/icons/Directions';
+import Directions from "../Directions";
 
 import exploreApi from "../../APIs/Explore";
 import searchApi from "../../APIs/Search";
@@ -17,9 +19,10 @@ class Location extends Component {
       searchTerm: '',
       places: []
     }
+    this.getNearByPlaces = this.getNearByPlaces.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
     this.chooseLocation = this.chooseLocation.bind(this)
-    this.getNearByPlaces = this.getNearByPlaces.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   chooseLocation(placeObj) {
@@ -50,12 +53,24 @@ class Location extends Component {
     });
   }
 
+  showDirections(placeObj) {
+    this.setState({
+      placeLocation: {
+        latitude: placeObj.location.lat, longitude: placeObj.location.lng
+      },
+      open: true
+    })
+  }
+  closeModal() {
+    this.setState({ open: false })
+  }
+
   componentDidMount() {
     this.getNearByPlaces()
   }
 
   render() {
-    const { places } = this.state
+    const { places, placeLocation, myProfileObj } = this.state
     return (
       <div style={{ textAlign: "center" }}>
         <br />
@@ -76,7 +91,7 @@ class Location extends Component {
           <Grid xs={10}>
             <Typography variant="overline" color="textSecondary" align="center">...Choose Location...</Typography>
             <Paper>
-              <Button variant="flat" color="default" onClick={this.getNearByPlaces}>Near By Places</Button>
+              <Button variant="text" color="default" onClick={this.getNearByPlaces}>Near By Places</Button>
               <br />
               <List >
                 {
@@ -92,8 +107,11 @@ class Location extends Component {
                         secondary={`${place.location.address} (${place.location.distance}m)`}
                       />
                       <ListItemSecondaryAction>
+                        <IconButton aria-label="Show directions" onClick={() => { this.showDirections(place) }}>
+                          <DirectionsIcon />
+                        </IconButton>
                         <IconButton aria-label="Meet here" onClick={() => { this.chooseLocation(place) }}>
-                          <AddLocationIcon />
+                          <ForwardIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
@@ -103,7 +121,18 @@ class Location extends Component {
             </Paper>
           </Grid>
         </Grid>
-      </div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.closeModal}
+        >
+          <div style={{ padding: "10px", left: '50%', top: "50%", backgroundColor: "white", width: "90%", margin: "0px auto" }}>
+            <Directions placeLocation={placeLocation} userLocation={myProfileObj.location} />
+            <Button onClick={this.closeModal}>Close</Button>
+          </div>
+        </Modal>
+      </div >
     )
   }
 }
