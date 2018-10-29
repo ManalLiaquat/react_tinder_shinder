@@ -28,6 +28,15 @@ class DateAndTime extends Component {
       firebase.database().ref(`/meetings/${meetingData.myProfileObj.uid}/${meetingData.friendProfileObj.uid}/`).set(meetingData)
         .then(() => {
 
+          let meetingData2 = {
+            dateAndTime: meetingData.dateAndTime,
+            status: meetingData.status,
+            placeInfo: meetingData.placeInfo,
+            myProfileObj: meetingData.friendProfileObj,
+            friendProfileObj: meetingData.myProfileObj
+          }
+          firebase.database().ref(`/requests/${meetingData.friendProfileObj.uid}/${meetingData.myProfileObj.uid}/`).set(meetingData2)
+
           firebase.database().ref("fcmTokens").once("value", function (snapshot) {
             // console.log(snapshot);
             snapshot.forEach(function (token) {
@@ -43,7 +52,8 @@ class DateAndTime extends Component {
                       "title": `New Request From ${meetingData.myProfileObj.nickName}`,
                       "body": "You have a new meeting request",
                       "icon": "https://firebasestorage.googleapis.com/v0/b/tinder-shinder-2.appspot.com/o/Notifications.png?alt=media&token=b4c86061-9644-4faa-a316-6461be0fe421", //Photo of sender
-                      "click_action": `https://tinder-shinder-2.firebaseapp.com/dashboard`
+                      "click_action": `https://tinder-shinder-2.firebaseapp.com/dashboard`,
+                      "myObject": JSON.stringify(meetingData2)
                     }
                   }),
                   success: function (response) {
