@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-import { Typography, Button, Paper, AppBar, Tabs, Tab, Avatar, List, ListItem, ListItemText, ListItemSecondaryAction } from "@material-ui/core";
+import { Typography, Button, Paper, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
 import * as CheckUser from "../../Constants/CheckUser";
 import firebase from "../../Config/firebase";
 import Add from "@material-ui/icons/Add";
 import moment from "moment";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DoneIcon from "@material-ui/icons/DoneOutline";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
   fab: {
@@ -21,6 +25,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       meetings: [],
+      requests: [],
       tab: 0
     };
     this.handleClick = this.handleClick.bind(this)
@@ -33,12 +38,23 @@ class Dashboard extends Component {
 
   getUserMeetings() {
     let { meetings } = this.state
-    firebase.database().ref(`/meetings/${CheckUser.User.uid}`).once('value', data => {
+    firebase.database().ref(`/meetings/${CheckUser.User.uid}`).on('child_added', data => {
       let meetData = data.val()
-      for (const key in meetData) {
-        meetings.push(meetData[key])
-      }
+      meetings.push(meetData)
+      console.log(meetData);
+
       this.setState({ meetings })
+    })
+  }
+
+  getUserRequests() {
+    let { requests } = this.state
+    firebase.database().ref(`/requests/${CheckUser.User.uid}`).on('child_added', data => {
+      let reqData = data.val()
+      requests.push(reqData)
+      console.log(reqData);
+
+      this.setState({ requests })
     })
   }
 
@@ -46,20 +62,49 @@ class Dashboard extends Component {
     this.setState({ tab })
   }
 
+  renderLists(array, showBtn) {
+    return (
+      <List style={{ width: "90%", margin: "0px auto" }}>
+        {
+          array.map((item, index) => {
+            return (
+              <ExpansionPanel key={item.friendProfileObj.uid}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Avatar alt={item.friendProfileObj.nickName} src={item.friendProfileObj.images[0]} />
+                  <Typography variant="headline" style={{ marginLeft: "10px" }}>{item.friendProfileObj.displayName}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <ListItemText primary={`NickName: ${item.friendProfileObj.nickName}`} secondary={`Meeting Time: ${moment(item.dateAndTime).format('LLLL')}`} />
+                  <ListItemText primary={`Status: ${item.status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
+                  {showBtn && <div>
+                    <IconButton onClick={() => { console.log('Hello Icon') }} color="secondary">
+                      <CancelIcon />
+                    </IconButton>
+                    <IconButton onClick={() => { console.log('Hello Icon') }} style={{ color: green[800] }}>
+                      <DoneIcon />
+                    </IconButton>
+                  </div>}
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )
+          })
+        }
+      </List>
+    )
+  }
+
   componentDidMount() {
     CheckUser.isUser();
     this.getUserMeetings()
+    this.getUserRequests()
   }
   componentDidUpdate() {
     CheckUser.isUser();
-    firebase.messaging().onMessage(payload => {
-      console.log("payload", payload)
-    })
   }
 
   render() {
     const { classes } = this.props;
-    const { meetings, tab } = this.state;
+    const { meetings, tab, requests } = this.state;
     return (
       <div >
         <AppBar position='static' color='inherit'>
@@ -73,25 +118,15 @@ class Dashboard extends Component {
           {tab === 0 && <div>
             {!meetings.length
               ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t done any meeting yet!</Typography>
-              : <List style={{ width: "90%", margin: "0px auto" }}>
-                {
-                  meetings.map((item, index) => {
-                    return (
-                      <ListItem key={item.friendProfileObj.uid}>
-                        <Avatar alt={item.friendProfileObj.nickName} src={item.friendProfileObj.images[0]} />
-                        <ListItemText primary={item.friendProfileObj.displayName} secondary={`Meeting Time: ${moment(item.dateAndTime).format('LLLL')}`} />
-                        <ListItemText primary={`Status: ${item.status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
-                        <ListItemSecondaryAction>
-
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    )
-                  })
-                }
-              </List>}
-
+              : this.renderLists(meetings, false)
+            }
           </div>}
-          {tab === 1 && <Typography>Item Two</Typography>}
+          {tab === 1 && <div>
+            {!requests.length
+              ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t done any meeting yet!</Typography>
+              : this.renderLists(requests, true)
+            }
+          </div>}
 
           <Button variant="extendedFab" aria-label="Add" color="primary" size="large" className={classes.fab} onClick={this.handleClick}>
             <Add />
