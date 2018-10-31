@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Typography } from "@material-ui/core";
-import * as CheckUser from "../../Constants/CheckUser";
 import firebase from "../../Config/firebase";
 import UserCard from "../UserCard";
 

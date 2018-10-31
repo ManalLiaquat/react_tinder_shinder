@@ -50,6 +50,7 @@ class Directions extends Component {
           userLocation={userLocation}
           placeLocation={placeLocation}
         />
+        <br />
         <Button variant="contained" color="primary" onClick={this.getDirections}>Get Directions</Button>
         <Typography variant="caption" color="secondary" align="right">{err}</Typography>
       </div>

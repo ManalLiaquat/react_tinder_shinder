@@ -128,8 +128,10 @@ class Dashboard extends Component {
 
   componentDidMount() {
     CheckUser.isUser();
-    this.getUserMeetings()
-    this.getUserRequests()
+    if (user) {
+      this.getUserMeetings()
+      this.getUserRequests()
+    }
   }
   componentDidUpdate() {
     CheckUser.isUser();
@@ -140,30 +142,32 @@ class Dashboard extends Component {
     const { meetings, tab, requests } = this.state;
     return (
       <div>
-        {user && <div style={{ textAlign: "center" }}>
-          <AppBar position='static' color='inherit'>
-            <Tabs value={tab} onChange={this.tabChange} indicatorColor="primary" textColor="primary" centered>
-              <Tab label="Meetings" />
-              <Tab label="Requests" />
-            </Tabs>
-          </AppBar>
-          {tab === 0 && <div>
-            {!meetings.length
-              ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t set any meeting yet!</Typography>
-              : this.renderLists(meetings, false)
-            }
-          </div>}
-          {tab === 1 && <div>
-            {!requests.length
-              ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t any meeting request yet!</Typography>
-              : this.renderLists(requests, true)
-            }
-          </div>}
-          <Button variant="extendedFab" aria-label="Add" color="primary" size="large" className={classes.fab} onClick={this.setMeeting}>
-            <Add />
-            Set a meeting!
+        {user && (
+          <div style={{ textAlign: "center" }}>
+            <AppBar position='static' color='inherit'>
+              <Tabs value={tab} onChange={this.tabChange} indicatorColor="primary" textColor="primary" centered>
+                <Tab label="Meetings" />
+                <Tab label="Requests" />
+              </Tabs>
+            </AppBar>
+            {tab === 0 && <div>
+              {!meetings.length
+                ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t set any meeting yet!</Typography>
+                : this.renderLists(meetings, false)
+              }
+            </div>}
+            {tab === 1 && <div>
+              {!requests.length
+                ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t any meeting request yet!</Typography>
+                : this.renderLists(requests, true)
+              }
+            </div>}
+            <Button variant="extendedFab" aria-label="Add" color="primary" size="large" className={classes.fab} onClick={this.setMeeting}>
+              <Add />
+              Set a meeting!
           </Button>
-        </div>}
+          </div>
+        )}
       </div>
     );
   }

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import Save from '@material-ui/icons/Save'
 import firebase from "../../../../Config/firebase";
-import * as CheckUser from "../../../../Constants/CheckUser";
 import Toast from "../../../../Constants/Toast";
 
 var currentUser = JSON.parse(localStorage.getItem("user"))

@@ -43,7 +43,7 @@ function getBeverages(array_time, array_beverages) {
   }
 }
 
-var locationObj
+var locationObj;
 function getLocation(coordinates) {
   locationObj = coordinates
 }
