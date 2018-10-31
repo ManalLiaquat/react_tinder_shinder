@@ -4,8 +4,8 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsPr
 import { InlineDateTimePicker } from 'material-ui-pickers/DateTimePicker';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import firebase from "../../Config/firebase"
-import * as CheckUser from "../../Constants/CheckUser";
 import swal from "sweetalert2";
+import Toast from "../../Constants/Toast";
 import $ from "jquery";
 
 class DateAndTime extends Component {
@@ -13,7 +13,7 @@ class DateAndTime extends Component {
     super(props)
     this.state = {
       meetingData: props.location.state,
-      dateTime: ''
+      dateTime: new Date()
     }
     this.sendRequest = this.sendRequest.bind(this)
     this.prompt = this.prompt.bind(this)
@@ -69,6 +69,8 @@ class DateAndTime extends Component {
             });
           });
         })
+    } else {
+      Toast({ type: "error", title: "Please select date and time" })
     }
   }
 
@@ -105,6 +107,8 @@ class DateAndTime extends Component {
                 value={this.state.dateTime}
                 disablePast={true}
                 onChange={(dateTime) => { this.setState({ dateTime: dateTime._d }) }}
+                autoSubmit={true}
+                autoOk={true}
               />
             </MuiPickersUtilsProvider>
             <br />
