@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Paper, Typography, TextField, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton, Modal } from '@material-ui/core'
+import { Grid, Paper, Typography, TextField, Button, Tooltip, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton, Modal } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import PlaceIcon from '@material-ui/icons/Place';
 import ForwardIcon from '@material-ui/icons/ArrowRight';
@@ -107,12 +107,16 @@ class Location extends Component {
                         secondary={`${place.location.address} (${place.location.distance}m)`}
                       />
                       <ListItemSecondaryAction>
-                        <IconButton aria-label="Show directions" onClick={() => { this.showDirections(place) }}>
-                          <DirectionsIcon />
-                        </IconButton>
-                        <IconButton aria-label="Meet here" onClick={() => { this.chooseLocation(place) }}>
-                          <ForwardIcon />
-                        </IconButton>
+                        <Tooltip title="Show Directions" placement="top">
+                          <IconButton aria-label="Show directions" onClick={() => { this.showDirections(place) }}>
+                            <DirectionsIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Choose Location" placement="top">
+                          <IconButton aria-label="Meet here" onClick={() => { this.chooseLocation(place) }}>
+                            <ForwardIcon />
+                          </IconButton>
+                        </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>
                   })
