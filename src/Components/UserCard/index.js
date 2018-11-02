@@ -79,18 +79,20 @@ class UserCard extends Component {
     let { allUsers } = this.state
 
     return (
-      <Cards onEnd={this.action("end")} className="root-master">
-        {allUsers.map((item, index) => (
-          <Card
-            onSwipeLeft={() => { this.removeCard(index) }}
-            onSwipeRight={() => { this.onSwipeRight(item) }}
-          >
-            <MUICard item={item} index={index} onSwipeRight={this.onSwipeRight} removeCard={this.removeCard} >
-              <p>{item.displayName}</p>
-            </MUICard>
-          </Card>
-        ))}
-      </Cards>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "10%" }}>
+        <Cards onEnd={this.action("end")} className="root-master">
+          {allUsers.map((item, index) => (
+            <Card
+              onSwipeLeft={() => { this.removeCard(index) }}
+              onSwipeRight={() => { this.onSwipeRight(item) }}
+            >
+              <MUICard item={item} index={index} onSwipeRight={this.onSwipeRight} removeCard={this.removeCard} >
+                <p>{item.displayName}</p>
+              </MUICard>
+            </Card>
+          ))}
+        </Cards>
+      </div>
     );
   }
 };
