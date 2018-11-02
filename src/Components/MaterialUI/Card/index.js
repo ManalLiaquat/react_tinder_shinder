@@ -37,7 +37,7 @@ class MUICard extends React.Component {
       <div style={{ margin: "0px auto" }}>
         <Card className={classes.card}>
           <Carousel showArrows={true}
-            showStatus={false}
+            showStatus={true}
             showThumbs={false}
             infiniteLoop={true}
             swipeable={true}
