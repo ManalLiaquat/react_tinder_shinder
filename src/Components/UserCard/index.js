@@ -26,13 +26,11 @@ class UserCard extends Component {
   onSwipeRight(friendProfileObj) {
     let { myLocation, myProfileObj, currentUser } = this.state
     swal({
-      title: `Hey ${currentUser.displayName}!`,
-      html: `<img src=${friendProfileObj.images[0]} height="100px" width="100px" />
-              <br/>Do you want to meet <i>${friendProfileObj.displayName}</i>`,
-      type: 'question',
+      html: `<img src=${friendProfileObj.images[0]} style="border-radius:100px; border:thick solid lightgreen; box-shadow:0px 0px 50px grey" height="100px" width="100px" />
+      <br/><h3>Hey ${currentUser.displayName}!</h3><p>Do you want to meet <b>${friendProfileObj.displayName}</b></p>`,
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      confirmButtonColor: '#3085d6',
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.value) {
@@ -79,8 +77,8 @@ class UserCard extends Component {
     let { allUsers } = this.state
 
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "10%" }}>
-        <Cards onEnd={this.action("end")} className="root-master">
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "8%" }}>
+        <Cards onEnd={this.action("end")} className="root-master" /* cardSize={[500, 500]} size={[500, 500]} */>
           {allUsers.map((item, index) => (
             <Card
               onSwipeLeft={() => { this.removeCard(index) }}
