@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import { Card, CardContent, CardActions, IconButton, Typography, Grid } from '@material-ui/core/';
+import { green } from "@material-ui/core/colors";
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
-
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
@@ -25,6 +20,12 @@ const styles = theme => ({
   actions: {
     margin: "0px",
     padding: "0px"
+  },
+  green: {
+    color: green[500],
+    '&:hover': {
+      backgroundColor: green[50],
+    },
   }
 });
 
@@ -58,7 +59,7 @@ class MUICard extends React.Component {
               alignItems="center">
 
               <Grid item xs={2}>
-                <IconButton aria-label="Remove Card" onClick={() => { removeCard(index) }}>
+                <IconButton color="secondary" aria-label="Remove Card" onClick={() => { removeCard(index) }}>
                   <CloseIcon />
                 </IconButton>
               </Grid>
@@ -75,7 +76,7 @@ class MUICard extends React.Component {
                 </CardContent>
               </Grid>
               <Grid item xs={2}>
-                <IconButton aria-label="Meet Person" onClick={() => { onSwipeRight(item) }}>
+                <IconButton className={classes.green} aria-label="Meet Person" onClick={() => { onSwipeRight(item) }}>
                   <CheckIcon />
                 </IconButton>
               </Grid>
@@ -85,7 +86,7 @@ class MUICard extends React.Component {
 
           </CardActions>
         </Card>
-      </div>
+      </div >
     );
   }
 }
