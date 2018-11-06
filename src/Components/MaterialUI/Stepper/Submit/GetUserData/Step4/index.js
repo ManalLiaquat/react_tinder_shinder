@@ -41,7 +41,6 @@ class Step4 extends Component {
   }
 
   componentDidUpdate() {
-    // this.sendData()
     const { coords } = this.state
     coords.latitude && this.sendData()
   }
