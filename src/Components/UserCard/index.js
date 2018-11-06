@@ -81,7 +81,7 @@ class UserCard extends Component {
         <Cards onEnd={this.action("end")} className="root-master" /* cardSize={[500, 500]} size={[500, 500]} */>
           {allUsers.map((item, index) => (
             <Card
-              onSwipeLeft={() => { this.removeCard(index) }}
+              onSwipeLeft={() => { console.log('removed') }}
               onSwipeRight={() => { this.onSwipeRight(item) }}
             >
               <MUICard item={item} index={index} onSwipeRight={this.onSwipeRight} removeCard={this.removeCard} >
