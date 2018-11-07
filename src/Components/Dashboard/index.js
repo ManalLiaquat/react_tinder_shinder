@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from "@material-ui/core";
+import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
 import * as CheckUser from "../../Constants/CheckUser";
 import firebase from "../../Config/firebase";
@@ -10,10 +10,12 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import DoneIcon from "@material-ui/icons/DoneOutline";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import green from '@material-ui/core/colors/green';
+import AddToCalendar from "react-add-to-calendar";
+import 'react-add-to-calendar/dist/react-add-to-calendar.css'
 
 const styles = theme => ({
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
@@ -24,6 +26,14 @@ const styles = theme => ({
   listDisplayName: {
     marginLeft: 10,
     lineHeight: "60px"
+  },
+  addToCalendar: {
+    '&:hover': {
+      height: "180px"
+    },
+    height: '10px',
+    transition: "height 0.2s ease-in",
+    display: 'block'
   }
 });
 
@@ -93,14 +103,21 @@ class Dashboard extends Component {
   renderLists(array, showBtn) {
     const { classes } = this.props
     return (
-      <List style={{ width: "90%", margin: "0px auto" }}>
+      <List style={{ width: "90%", margin: "0px auto 200px auto" }}>
         {
           array.map((item, index) => {
+            let event = {
+              title: `Meeting with ${item.friendProfileObj.displayName}`,
+              description: `I have a meeting with ${item.friendProfileObj.displayName} at ${item.placeInfo.name}, ${item.placeInfo.location.address}`,
+              location: `${item.placeInfo.name}, ${item.placeInfo.location.address}, ${item.placeInfo.location.city}, ${item.placeInfo.location.state}, ${item.placeInfo.location.country}.`,
+              startTime: moment(item.dateAndTime).format('LLLL'),
+              endTime: moment(item.dateAndTime).format('LLLL')
+            };
             return (
               <ExpansionPanel key={item.friendProfileObj.uid}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <Avatar alt={item.friendProfileObj.nickName} src={item.friendProfileObj.images[0]} className={classes.bigAvatar} />
-                  <Typography variant="headline" className={classes.listDisplayName} >{item.friendProfileObj.displayName}</Typography>
+                  <Typography variant="title" className={classes.listDisplayName} >{item.friendProfileObj.displayName}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <ListItemText primary={`NickName: ${item.friendProfileObj.nickName}`} secondary={`Meeting Time: ${moment(item.dateAndTime).format('LLLL')}`} />
@@ -118,6 +135,12 @@ class Dashboard extends Component {
                     </Tooltip>
                   </div>}
                 </ExpansionPanelDetails>
+                <ExpansionPanelActions>
+                  <div className={classes.addToCalendar}>
+                    <AddToCalendar event={event} buttonLabel="Put on my calendar" />
+                  </div>
+                  <br /><br />
+                </ExpansionPanelActions>
               </ExpansionPanel>
             )
           })
