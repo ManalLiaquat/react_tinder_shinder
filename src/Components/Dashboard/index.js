@@ -37,7 +37,7 @@ const styles = theme => ({
   }
 });
 
-var user = JSON.parse(localStorage.getItem('user'))
+// var user = JSON.parse(localStorage.getItem('user'))
 
 
 class Dashboard extends Component {
@@ -46,10 +46,15 @@ class Dashboard extends Component {
     this.state = {
       meetings: [],
       requests: [],
-      tab: 0
+      tab: 0,
+      user: JSON.parse(localStorage.getItem('user'))
     };
     this.setMeeting = this.setMeeting.bind(this)
     this.tabChange = this.tabChange.bind(this)
+  }
+
+  static getDerivedStateFromProps(props) {
+    return { user: props.location.state ? props.location.state.user : JSON.parse(localStorage.getItem('user')) }
   }
 
   setMeeting() {
@@ -57,7 +62,7 @@ class Dashboard extends Component {
   }
 
   getUserMeetings() {
-    let { meetings } = this.state
+    let { meetings, user } = this.state
     firebase.database().ref(`/meetings/${user.uid}`).on('child_added', data => {
       let meetData = data.val()
       meetings.push(meetData)
@@ -66,7 +71,7 @@ class Dashboard extends Component {
   }
 
   getUserRequests() {
-    let { requests } = this.state
+    let { requests, user } = this.state
     firebase.database().ref(`/requests/${user.uid}`).on('child_added', data => {
       let reqData = data.val()
       requests.push(reqData)
@@ -79,6 +84,7 @@ class Dashboard extends Component {
   }
 
   handleStatus(meetingObj, status) {
+    let { user } = this.state
     meetingObj.status = status
     firebase.database().ref(`/requests/${user.uid}/${meetingObj.friendProfileObj.uid}/`).set(meetingObj)
       .then(() => {
@@ -150,6 +156,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    let { user } = this.state
     CheckUser.isUser();
     if (user) {
       this.getUserMeetings()
@@ -162,7 +169,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    const { meetings, tab, requests } = this.state;
+    const { meetings, tab, requests, user } = this.state;
     return (
       <div>
         {user && (
