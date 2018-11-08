@@ -41,7 +41,7 @@ class SigninWithFacebook extends React.Component {
                 props.history.replace('/profile')
               }
               else {
-                props.history.replace('/dashboard')
+                props.history.replace('/dashboard', { user: user.toJSON() })
               }
             })
           }
