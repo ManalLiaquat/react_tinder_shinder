@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import green from '@material-ui/core/colors/green';
 import AddToCalendar from "react-add-to-calendar";
 import 'react-add-to-calendar/dist/react-add-to-calendar.css'
+import SwipeableViews from 'react-swipeable-views';
 
 const styles = theme => ({
   fab: {
@@ -51,6 +52,7 @@ class Dashboard extends Component {
     };
     this.setMeeting = this.setMeeting.bind(this)
     this.tabChange = this.tabChange.bind(this)
+    this.handleChangeIndex = this.handleChangeIndex.bind(this)
   }
 
   static getDerivedStateFromProps(props) {
@@ -80,6 +82,10 @@ class Dashboard extends Component {
   }
 
   tabChange(event, tab) {
+    this.setState({ tab })
+  }
+
+  handleChangeIndex(tab) {
     this.setState({ tab })
   }
 
@@ -162,13 +168,14 @@ class Dashboard extends Component {
       this.getUserMeetings()
       this.getUserRequests()
     }
+
   }
   componentDidUpdate() {
     CheckUser.isUser();
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
     const { meetings, tab, requests, user } = this.state;
     return (
       <div>
@@ -180,18 +187,20 @@ class Dashboard extends Component {
                 <Tab label="Requests" />
               </Tabs>
             </AppBar>
-            {tab === 0 && <div>
-              {!meetings.length
-                ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t set any meeting yet!</Typography>
-                : this.renderLists(meetings, false)
-              }
-            </div>}
-            {tab === 1 && <div>
-              {!requests.length
-                ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t any meeting request yet!</Typography>
-                : this.renderLists(requests, true)
-              }
-            </div>}
+            <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={tab} onChangeIndex={this.handleChangeIndex}>
+              {tab === 0 && <div>
+                {!meetings.length
+                  ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t set any meeting yet!</Typography>
+                  : this.renderLists(meetings, false)
+                }
+              </div>}
+              {tab === 1 && <div>
+                {!requests.length
+                  ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t any meeting request yet!</Typography>
+                  : this.renderLists(requests, true)
+                }
+              </div>}
+            </SwipeableViews>
             <Button variant="extendedFab" aria-label="Add" color="primary" size="large" className={classes.fab} onClick={this.setMeeting}>
               <Add />
               Set a meeting!
@@ -203,4 +212,4 @@ class Dashboard extends Component {
   }
 }
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles, { withTheme: true })(Dashboard);
