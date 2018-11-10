@@ -3,6 +3,8 @@ import { Button } from "@material-ui/core";
 import firebase from "../../Config/firebase";
 import Toast from "../../Constants/Toast";
 import Arrow from "@material-ui/icons/ArrowForwardIosRounded";
+import { removeUser } from "../../Config/Redux/Actions/authActions";
+import { connect } from "react-redux";
 
 class SignOut extends React.Component {
 
@@ -16,6 +18,7 @@ class SignOut extends React.Component {
 
   logout() {
     const { myProps } = this.state
+    myProps.removeUser();
     firebase.auth().signOut().then(() => {
       localStorage.setItem("user", null)
       Toast({
@@ -40,5 +43,19 @@ class SignOut extends React.Component {
   }
 }
 
+const mapStateToProps = state => { // to connect the global state with component
+  // console.log("state from component", state);
+  return {
+    user: state.authReducers.user
+  };
+};
 
-export default SignOut;
+const mapDispatchToProps = dispatch => { // to connect the actions with component props | call the reducer to update store
+  // console.log("dispatch from component", dispatch);
+  return {
+    removeUser: () => dispatch(removeUser())
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignOut);

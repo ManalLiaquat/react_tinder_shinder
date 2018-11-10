@@ -13,6 +13,8 @@ import green from '@material-ui/core/colors/green';
 import AddToCalendar from "react-add-to-calendar";
 import 'react-add-to-calendar/dist/react-add-to-calendar.css'
 import SwipeableViews from 'react-swipeable-views';
+import { connect } from "react-redux";
+import { updateUser } from "../../Config/Redux/Actions/authActions";
 
 const styles = theme => ({
   fab: {
@@ -48,7 +50,8 @@ class Dashboard extends Component {
       meetings: [],
       requests: [],
       tab: 0,
-      user: JSON.parse(localStorage.getItem('user'))
+      user: null
+      // user: JSON.parse(localStorage.getItem('user'))
     };
     this.setMeeting = this.setMeeting.bind(this)
     this.tabChange = this.tabChange.bind(this)
@@ -56,7 +59,8 @@ class Dashboard extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    return { user: props.location.state ? props.location.state.user : JSON.parse(localStorage.getItem('user')) }
+    console.log('IsUser_REDUX ==>', props.user ? "YES" : "NO");
+    return { user: props.location.state ? props.location.state.user : props.user || JSON.parse(localStorage.getItem('user')) }
   }
 
   setMeeting() {
@@ -164,12 +168,17 @@ class Dashboard extends Component {
   componentDidMount() {
     let { user } = this.state
     CheckUser.isUser();
+    this.props.updateUser()
+    // setTimeout(() => this.props.removeUser(), 4000)
     if (user) {
       this.getUserMeetings()
       this.getUserRequests()
     }
 
   }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log('nextProps ==>', nextProps.user);
+  // }
   componentDidUpdate() {
     CheckUser.isUser();
   }
@@ -212,4 +221,20 @@ class Dashboard extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Dashboard);
+
+const mapStateToProps = state => { // to connect the global state with component
+  // console.log("state from component", state);
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => { // to connect the actions with component props | call the reducer to update store
+  // console.log("dispatch from component", dispatch);
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Dashboard));
