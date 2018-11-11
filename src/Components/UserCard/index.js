@@ -4,6 +4,8 @@ import MUICard from "../MaterialUI/Card";
 import firebase from "../../Config/firebase";
 import geofire from "geofire";
 import swal from "sweetalert2";
+import { connect } from "react-redux";
+import { updateUser } from "../../Config/Redux/Actions/authActions";
 
 class UserCard extends Component {
   constructor(props) {
@@ -13,14 +15,18 @@ class UserCard extends Component {
       myLocation: props.myLocation,
       myOptions: props.myOptions,
       myProfileObj: props.myProfileObj,
-      currentUser: JSON.parse(localStorage.getItem("user"))
+      currentUser: null
     }
     this.onSwipeRight = this.onSwipeRight.bind(this)
     this.removeCard = this.removeCard.bind(this)
   }
 
+  static getDerivedStateFromProps(props) {
+    return { currentUser: props.user }
+  }
+
   action = msg => {
-    console.log(msg);
+    // console.log(msg);
   };
 
   onSwipeRight(friendProfileObj) {
@@ -95,4 +101,16 @@ class UserCard extends Component {
   }
 };
 
-export default UserCard;
+const mapStateToProps = state => {
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserCard);

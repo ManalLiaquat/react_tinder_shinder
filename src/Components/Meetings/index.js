@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import firebase from "../../Config/firebase";
 import UserCard from "../UserCard";
+import { connect } from "react-redux";
+import { updateUser } from "../../Config/Redux/Actions/authActions";
 
 class Meetings extends Component {
   constructor(props) {
@@ -8,14 +10,19 @@ class Meetings extends Component {
     this.state = {
       myLocation: [],
       myOptions: {},
-      myProfileObj: null
+      myProfileObj: null,
+      currentUser: null
     };
     this.getMyLocation = this.getMyLocation.bind(this)
   }
 
+  static getDerivedStateFromProps(props) {
+    return { currentUser: props.user }
+  }
+
   getMyLocation() {
-    let { myLocation, myOptions } = this.state
-    let currentUser = JSON.parse(localStorage.getItem("user"));
+    let { myLocation, myOptions, currentUser } = this.state
+
     firebase.database().ref('/user_data').on("child_added", data => {
       var user = data.val();
       if (user.uid === currentUser.uid) {
@@ -48,4 +55,16 @@ class Meetings extends Component {
   }
 }
 
-export default Meetings;
+const mapStateToProps = state => {
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Meetings);

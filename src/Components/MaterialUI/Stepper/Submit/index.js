@@ -3,21 +3,22 @@ import { Button } from "@material-ui/core";
 import Save from '@material-ui/icons/Save'
 import firebase from "../../../../Config/firebase";
 import Toast from "../../../../Constants/Toast";
-
-var currentUser = JSON.parse(localStorage.getItem("user"))
+import { connect } from "react-redux";
+import { updateUser } from "../../../../Config/Redux/Actions/authActions";
 
 class Submit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      userData: {}
+      userData: {},
+      user: null
     }
     this.submit = this.submit.bind(this)
   }
 
   submit() {
-    const { userData } = this.state
-    firebase.database().ref(`/user_data/${currentUser.uid}`).set(userData).then(() => {
+    const { userData, user } = this.state
+    firebase.database().ref(`/user_data/${user.uid}`).set(userData).then(() => {
       Toast({
         type: 'success',
         title: "Successfully submitted your profile",
@@ -30,9 +31,9 @@ class Submit extends Component {
 
   componentDidMount() {
     let { step1, step2, step3, step4 } = this.props
-    let { userData } = this.state
+    let { userData, user } = this.state
 
-    userData.displayName = currentUser.displayName
+    userData.displayName = user.displayName
 
     for (let key1 in step1) {
       userData[key1] = step1[key1]
@@ -46,7 +47,7 @@ class Submit extends Component {
 
     userData.location = step4
 
-    userData.uid = currentUser.uid
+    userData.uid = user.uid
 
     this.setState({ userData })
   }
@@ -61,4 +62,16 @@ class Submit extends Component {
 
 }
 
-export default Submit
+const mapStateToProps = state => {
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Submit)

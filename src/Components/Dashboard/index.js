@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions } from "@material-ui/core";
+import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions, Divider } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
-import * as CheckUser from "../../Constants/CheckUser";
 import firebase from "../../Config/firebase";
 import Toast from "../../Constants/Toast";
 import moment from "moment";
@@ -40,8 +39,6 @@ const styles = theme => ({
   }
 });
 
-// var user = JSON.parse(localStorage.getItem('user'))
-
 
 class Dashboard extends Component {
   constructor(props) {
@@ -51,7 +48,6 @@ class Dashboard extends Component {
       requests: [],
       tab: 0,
       user: null
-      // user: JSON.parse(localStorage.getItem('user'))
     };
     this.setMeeting = this.setMeeting.bind(this)
     this.tabChange = this.tabChange.bind(this)
@@ -59,8 +55,7 @@ class Dashboard extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    console.log('IsUser_REDUX ==>', props.user ? "YES" : "NO");
-    return { user: props.location.state ? props.location.state.user : props.user || JSON.parse(localStorage.getItem('user')) }
+    return { user: props.location.state ? props.location.state.user : props.user }
   }
 
   setMeeting() {
@@ -133,10 +128,11 @@ class Dashboard extends Component {
               <ExpansionPanel key={item.friendProfileObj.uid}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <Avatar alt={item.friendProfileObj.nickName} src={item.friendProfileObj.images[0]} className={classes.bigAvatar} />
-                  <Typography variant="title" className={classes.listDisplayName} >{item.friendProfileObj.displayName}</Typography>
+                  <Typography variant="subtitle2" className={classes.listDisplayName} >{item.friendProfileObj.displayName}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <ListItemText primary={`NickName: ${item.friendProfileObj.nickName}`} secondary={`Meeting Time: ${moment(item.dateAndTime).format('LLLL')}`} />
+                  <hr />
                   <ListItemText primary={`Status: ${item.status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
                   {showBtn && <div>
                     <Tooltip title="Cancel" disableFocusListener placement="top">
@@ -151,6 +147,7 @@ class Dashboard extends Component {
                     </Tooltip>
                   </div>}
                 </ExpansionPanelDetails>
+                <Divider />
                 <ExpansionPanelActions>
                   <div className={classes.addToCalendar}>
                     <AddToCalendar event={event} buttonLabel="Put on my calendar" />
@@ -167,20 +164,12 @@ class Dashboard extends Component {
 
   componentDidMount() {
     let { user } = this.state
-    CheckUser.isUser();
     this.props.updateUser()
-    // setTimeout(() => this.props.removeUser(), 4000)
     if (user) {
       this.getUserMeetings()
       this.getUserRequests()
     }
 
-  }
-  // componentWillReceiveProps(nextProps) {
-  //   console.log('nextProps ==>', nextProps.user);
-  // }
-  componentDidUpdate() {
-    CheckUser.isUser();
   }
 
   render() {
@@ -191,7 +180,7 @@ class Dashboard extends Component {
         {user && (
           <div style={{ textAlign: "center" }}>
             <AppBar position='static' color='inherit'>
-              <Tabs value={tab} onChange={this.tabChange} indicatorColor="primary" textColor="primary" centered>
+              <Tabs value={tab} onChange={this.tabChange} indicatorColor="primary" textColor="primary" fullWidth>
                 <Tab label="Meetings" />
                 <Tab label="Requests" />
               </Tabs>
@@ -222,15 +211,13 @@ class Dashboard extends Component {
 }
 
 
-const mapStateToProps = state => { // to connect the global state with component
-  // console.log("state from component", state);
+const mapStateToProps = state => {
   return {
     user: state.authReducers.user
   };
 };
 
-const mapDispatchToProps = dispatch => { // to connect the actions with component props | call the reducer to update store
-  // console.log("dispatch from component", dispatch);
+const mapDispatchToProps = dispatch => {
   return {
     updateUser: user => dispatch(updateUser(user))
   };

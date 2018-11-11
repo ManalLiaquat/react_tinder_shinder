@@ -7,16 +7,23 @@ import firebase from "../../Config/firebase"
 import swal from "sweetalert2";
 import Toast from "../../Constants/Toast";
 import $ from "jquery";
+import { connect } from "react-redux";
+import { updateUser } from "../../Config/Redux/Actions/authActions";
 
 class DateAndTime extends Component {
   constructor(props) {
     super(props)
     this.state = {
       meetingData: props.location.state,
-      dateTime: new Date()
+      dateTime: new Date(),
+      user: null
     }
     this.sendRequest = this.sendRequest.bind(this)
     this.prompt = this.prompt.bind(this)
+  }
+
+  static getDerivedStateFromProps(props) {
+    return { user: props.user }
   }
 
   sendRequest() {
@@ -94,7 +101,7 @@ class DateAndTime extends Component {
   }
 
   render() {
-    let user = JSON.parse(localStorage.getItem("user"));
+    let { user } = this.state;
     return (
       <div style={{ textAlign: "center", padding: "20px" }}>
         {
@@ -122,4 +129,16 @@ class DateAndTime extends Component {
   }
 }
 
-export default DateAndTime;
+const mapStateToProps = state => {
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DateAndTime);

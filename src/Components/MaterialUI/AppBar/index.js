@@ -7,7 +7,8 @@ import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import SigninWithFacebook from "../../SigninWithFacebook";
 import SignOut from "../../SignOut";
 import img from '../../../Images/bgImage.png'
-import * as CheckUser from "../../../Constants/CheckUser";
+import { connect } from "react-redux";
+import { updateUser } from "../../../Config/Redux/Actions/authActions";
 
 const styles = {
   root: {
@@ -44,7 +45,12 @@ class SwipeableTemporaryDrawer extends React.Component {
     super()
     this.state = {
       left: false,
+      user: null
     };
+  }
+
+  static getDerivedStateFromProps(props) {
+    return { user: props.user }
   }
 
   toggleDrawer = (side, open) => () => {
@@ -53,16 +59,9 @@ class SwipeableTemporaryDrawer extends React.Component {
     });
   };
 
-  componentDidMount() {
-    CheckUser.isUser();
-  }
-  componentDidUpdate() {
-    CheckUser.isUser();
-  }
-
   render() {
     const { classes } = this.props;
-    let user = JSON.parse(localStorage.getItem('user'))
+    let { user } = this.state;
 
     const sideList = (
       <div className={classes.list}>
@@ -129,4 +128,16 @@ SwipeableTemporaryDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SwipeableTemporaryDrawer);
+const mapStateToProps = state => {
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SwipeableTemporaryDrawer));

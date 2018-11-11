@@ -43,15 +43,13 @@ class SignOut extends React.Component {
   }
 }
 
-const mapStateToProps = state => { // to connect the global state with component
-  // console.log("state from component", state);
+const mapStateToProps = state => {
   return {
     user: state.authReducers.user
   };
 };
 
-const mapDispatchToProps = dispatch => { // to connect the actions with component props | call the reducer to update store
-  // console.log("dispatch from component", dispatch);
+const mapDispatchToProps = dispatch => {
   return {
     removeUser: () => dispatch(removeUser())
   };

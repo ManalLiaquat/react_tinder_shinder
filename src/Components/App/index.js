@@ -8,8 +8,8 @@ import { green, indigo } from '@material-ui/core/colors/';
 import CloseIcon from "@material-ui/icons/Close";
 import Directions from "../Directions";
 import moment from 'moment';
-
-let user = JSON.parse(localStorage.getItem('user'))
+import { connect } from "react-redux";
+import { updateUser } from "../../Config/Redux/Actions/authActions";
 
 const styles = theme => ({
   paper: {
@@ -54,7 +54,8 @@ class App extends Component {
       open: false,
       notificationObj: null,
       isDirections: true,
-      placeLocation: {}
+      placeLocation: {},
+      user: null
     }
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -62,10 +63,15 @@ class App extends Component {
     this.showDirections = this.showDirections.bind(this)
   }
 
+  static getDerivedStateFromProps(props) {
+    console.log('IsUser_REDUX ==>', props.user ? "YES" : "NO");
+    return { user: props.user }
+  }
+
   showNotification() {
     firebase.messaging().onMessage(payload => {
       for (const key in payload.data) {
-        console.log("object", JSON.parse(payload.data[key]));
+        // console.log("object", JSON.parse(payload.data[key]));
         this.setState({ notificationObj: JSON.parse(payload.data[key]) })
       }
       this.handleOpen()
@@ -88,6 +94,7 @@ class App extends Component {
   }
 
   handleStatus(meetingObj, status) {
+    let { user } = this.state
     meetingObj.status = status
     firebase.database().ref(`/requests/${user.uid}/${meetingObj.friendProfileObj.uid}/`).set(meetingObj)
       .then(() => {
@@ -174,4 +181,18 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+const mapStateToProps = state => {
+  // console.log("state from component", state);
+  return {
+    user: state.authReducers.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  // console.log("dispatch from component", dispatch);
+  return {
+    updateUser: user => dispatch(updateUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
