@@ -8,6 +8,8 @@ import Add from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DoneIcon from "@material-ui/icons/DoneOutline";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LocalBarIcon from '@material-ui/icons/LocalBar';
+import InboxIcon from '@material-ui/icons/Inbox';
 import green from '@material-ui/core/colors/green';
 import AddToCalendar from "react-add-to-calendar";
 import 'react-add-to-calendar/dist/react-add-to-calendar.css'
@@ -181,8 +183,8 @@ class Dashboard extends Component {
           <div style={{ textAlign: "center" }}>
             <AppBar position='static' color='inherit'>
               <Tabs value={tab} onChange={this.tabChange} indicatorColor="primary" textColor="primary" fullWidth>
-                <Tab label="Meetings" />
-                <Tab label="Requests" />
+                <Tab icon={<LocalBarIcon />} label="Meetings" />
+                <Tab icon={<InboxIcon />} label="Requests" />
               </Tabs>
             </AppBar>
             <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={tab} onChangeIndex={this.handleChangeIndex}>
