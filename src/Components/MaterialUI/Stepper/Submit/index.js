@@ -16,6 +16,10 @@ class Submit extends Component {
     this.submit = this.submit.bind(this)
   }
 
+  static getDerivedStateFromProps(props) {
+    return { user: props.user }
+  }
+
   submit() {
     const { userData, user } = this.state
     firebase.database().ref(`/user_data/${user.uid}`).set(userData).then(() => {
@@ -23,7 +27,7 @@ class Submit extends Component {
         type: 'success',
         title: "Successfully submitted your profile",
         onClose: () => {
-          this.props.history.replace('/dashboard')
+          this.props.closeModal ? this.props.handleClose() : this.props.history.replace('/dashboard')
         }
       })
     })
