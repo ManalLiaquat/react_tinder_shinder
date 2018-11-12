@@ -38,7 +38,7 @@ class SigninWithFacebook extends React.Component {
               let data = snapshot.val();
               var array = Object.keys(data)
               if ((user.toJSON().createdAt === user.toJSON().lastLoginAt) || !(array.includes(user.toJSON().uid))) {
-                props.history.replace('/profile')
+                props.history.replace('/createProfile')
               }
               else {
                 props.history.replace('/dashboard', { user: user.toJSON() })
