@@ -9,9 +9,10 @@ class Step1 extends Component {
       nickName: '',
       phone: ''
     }
+    this.getData = this.getData.bind(this)
   }
 
-  componentDidUpdate() {
+  getData() {
     const { getNameAndPhone, handleChangeState } = this.props
     const { nickName, phone } = this.state
     if (nickName && phone) {
@@ -24,6 +25,13 @@ class Step1 extends Component {
         title: "Please fill both fields"
       })
     }
+  }
+
+  componentDidUpdate() {
+    this.getData()
+  }
+  componentDidMount() {
+    this.getData()
   }
 
   render() {
