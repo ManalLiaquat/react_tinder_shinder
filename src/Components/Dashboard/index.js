@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions, Divider } from "@material-ui/core";
+import { Typography, Button, Tooltip, AppBar, Tabs, Tab, Avatar, List, ListItemText, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions, Divider, Modal } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
 import firebase from "../../Config/firebase";
 import Toast from "../../Constants/Toast";
@@ -10,12 +10,15 @@ import DoneIcon from "@material-ui/icons/DoneOutline";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocalBarIcon from '@material-ui/icons/LocalBar';
 import InboxIcon from '@material-ui/icons/Inbox';
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import green from '@material-ui/core/colors/green';
 import AddToCalendar from "react-add-to-calendar";
 import 'react-add-to-calendar/dist/react-add-to-calendar.css'
 import SwipeableViews from 'react-swipeable-views';
 import { connect } from "react-redux";
 import { updateUser } from "../../Config/Redux/Actions/authActions";
+import StarRatingComponent from 'react-star-rating-component';
 
 const styles = theme => ({
   fab: {
@@ -38,9 +41,42 @@ const styles = theme => ({
     height: '10px',
     transition: "height 0.2s ease-in",
     display: 'block'
-  }
+  },
+  paper: {
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 1,
+    top: '50%',
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "500px",
+    margin: "0px auto",
+    textAlign: "center"
+  },
+  bigAvatar2: {
+    width: 80,
+    height: 80,
+    display: "inline-block",
+    margin: "0px auto"
+  },
+  avatarContainer: {
+    padding: '5px 0px',
+    backgroundColor: "lightgreen",
+    display: "inline-block",
+    borderRadius: '100px',
+  },
 });
 
+var currentTime = Date.now();
+var counter = 0;
+function getTime() {
+  setInterval(() => {
+    currentTime = Date.now();
+    counter = counter + 1;
+  }, 1000);
+}
+getTime();
 
 class Dashboard extends Component {
   constructor(props) {
@@ -49,11 +85,15 @@ class Dashboard extends Component {
       meetings: [],
       requests: [],
       tab: 0,
-      user: null
+      user: null,
+      timePopup: true,
+      rate: 0
     };
     this.setMeeting = this.setMeeting.bind(this)
     this.tabChange = this.tabChange.bind(this)
     this.handleChangeIndex = this.handleChangeIndex.bind(this)
+    this.showTimePopup = this.showTimePopup.bind(this)
+    this.handlePopupStatus = this.handlePopupStatus.bind(this)
   }
 
   static getDerivedStateFromProps(props) {
@@ -90,6 +130,70 @@ class Dashboard extends Component {
     this.setState({ tab })
   }
 
+  handlePopupStatus(meetingObj, tempStatus, nodeName) {
+    let { user, rate } = this.state
+    meetingObj.myProfileObj.tempStatus = tempStatus
+    var friendProfileObj = meetingObj.friendProfileObj;
+    friendProfileObj.ratings = []
+    friendProfileObj.ratings.push({[user.uid]: rate})
+    firebase.database().ref(`/user_data/${friendProfileObj.uid}/`).set(friendProfileObj)
+    firebase.database().ref(`/${nodeName}/${user.uid}/${meetingObj.friendProfileObj.uid}/`).set(meetingObj)
+      .then(() => {
+        let newObject = {
+          dateAndTime: meetingObj.dateAndTime,
+          friendProfileObj: meetingObj.myProfileObj,
+          myProfileObj: meetingObj.friendProfileObj,
+          placeInfo: meetingObj.placeInfo,
+          status: meetingObj.status
+        }
+        meetingObj.myProfileObj.tempStatus = tempStatus
+        firebase.database().ref(`/${nodeName==='meetings'?'requests':'meetings'}/${meetingObj.friendProfileObj.uid}/${user.uid}/`).set(newObject)
+        Toast({
+          type: "success",
+          title: `${nodeName} has been ${tempStatus.toLowerCase()}`
+        })
+        this.setState({ timePopup: false })
+      })
+  }
+
+  showTimePopup(item, title) {
+    let { timePopup,rate } = this.state
+    let { classes } = this.props
+    return (
+      <Modal open={timePopup}>
+        <div className={this.props.classes.paper}>
+          <Typography variant="overline" color="error" >Was the meeting successful?</Typography>
+          <div className={classes.avatarContainer}>
+            <Tooltip title="You" placement="left">
+              <Avatar alt="user1" src={item.myProfileObj.images[0]} style={{ left: "10%" }} className={classes.bigAvatar2} />
+            </Tooltip>
+            <Tooltip title={item.friendProfileObj.displayName} placement="right">
+              <Avatar alt="user2" src={item.friendProfileObj.images[0]} style={{ left: "-10%" }} className={classes.bigAvatar2} />
+            </Tooltip>
+          </div>
+          <Typography variant="subtitle1">Venue: {item.placeInfo.name}</Typography>
+          <Typography variant="subtitle1">Place: {item.placeInfo.location.address}</Typography>
+          <br />
+          <Divider />
+          <Typography variant="subtitle2">How much will you rate {item.friendProfileObj.displayName}</Typography>
+          <StarRatingComponent 
+            name="rate user" 
+            value={rate}
+            onStarClick={(nextValue, prevValue, name)=>{ this.setState({rate: nextValue}) }}
+          />
+          <Divider />
+          <br />
+          <Button variant="contained" color="primary" onClick={() => { this.handlePopupStatus(item, "YES", title) }}>
+            <ThumbUpIcon /> YES
+          </Button>{' '}
+          <Button variant="contained" color="secondary" onClick={() => { this.handlePopupStatus(item, "NO", title) }}>
+            NO <ThumbDownIcon />
+          </Button>
+        </div>
+      </Modal>
+    )
+  }
+
   handleStatus(meetingObj, status) {
     let { user } = this.state
     meetingObj.status = status
@@ -113,7 +217,7 @@ class Dashboard extends Component {
   }
 
 
-  renderLists(array, showBtn) {
+  renderLists(array, showBtn, title) {
     const { classes } = this.props
     return (
       <List style={{ width: "90%", margin: "0px auto 200px auto" }}>
@@ -126,6 +230,13 @@ class Dashboard extends Component {
               startTime: moment(item.dateAndTime).format('LLLL'),
               endTime: moment(item.dateAndTime).format('LLLL')
             };
+            let status = (item.myProfileObj.tempStatus && item.friendProfileObj.tempStatus)
+              ?(item.myProfileObj.tempStatus === item.friendProfileObj.tempStatus) 
+                ? (item.myProfileObj.tempStatus === 'YES' && item.friendProfileObj.tempStatus === 'YES')
+                  ?'DONE'
+                  :"CANCELLED" 
+                : 'COMPLICATED'
+              : item.status
             return (
               <ExpansionPanel key={item.friendProfileObj.uid}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -135,8 +246,8 @@ class Dashboard extends Component {
                 <ExpansionPanelDetails>
                   <ListItemText primary={`NickName: ${item.friendProfileObj.nickName}`} secondary={`Meeting Time: ${moment(item.dateAndTime).format('LLLL')}`} />
                   <hr />
-                  <ListItemText primary={`Status: ${item.status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
-                  {showBtn && <div>
+                  <ListItemText primary={`Status: ${status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
+                    {showBtn && <div>
                     <Tooltip title="Cancel" disableFocusListener placement="top">
                       <IconButton disabled={item.status !== 'PENDING' ? true : false} onClick={() => { this.handleStatus(item, "CANCELLED") }} color="secondary">
                         <CancelIcon />
@@ -156,6 +267,7 @@ class Dashboard extends Component {
                   </div>
                   <br /><br />
                 </ExpansionPanelActions>
+                {((currentTime >= item.dateAndTime) && (item.myProfileObj.tempStatus && item.status === "PENDING")) && this.showTimePopup(item, title)}
               </ExpansionPanel>
             )
           })
@@ -163,7 +275,7 @@ class Dashboard extends Component {
       </List>
     )
   }
-
+  
   componentDidMount() {
     let { user } = this.state
     this.props.updateUser()
@@ -171,7 +283,12 @@ class Dashboard extends Component {
       this.getUserMeetings()
       this.getUserRequests()
     }
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.tab !== this.state.tab) {
+      this.setState({ timePopup: true })
+    }
   }
 
   render() {
@@ -191,21 +308,22 @@ class Dashboard extends Component {
               {tab === 0 && <div>
                 {!meetings.length
                   ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t set any meeting yet!</Typography>
-                  : this.renderLists(meetings, false)
+                  : this.renderLists(meetings, false, 'meetings')
                 }
               </div>}
               {tab === 1 && <div>
                 {!requests.length
                   ? <Typography variant="h6" style={{ lineHeight: "100px" }}>You haven’t any meeting request yet!</Typography>
-                  : this.renderLists(requests, true)
+                  : this.renderLists(requests, true, 'requests')
                 }
               </div>}
             </SwipeableViews>
             <Button variant="extendedFab" aria-label="Add" color="primary" size="large" className={classes.fab} onClick={this.setMeeting}>
               <Add />
               Set a meeting!
-          </Button>
+            </Button>
           </div>
+
         )}
       </div>
     );
