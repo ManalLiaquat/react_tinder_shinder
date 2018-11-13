@@ -7,12 +7,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import StarRatingComponent from 'react-star-rating-component';
 
 const styles = theme => ({
   card: {
     maxWidth: 300,
     margin: "0px auto",
-    // maxHeight: 400
+    minHeight: 420
   },
   displayName: {
     textAlign: 'center'
@@ -33,7 +34,7 @@ class MUICard extends React.Component {
 
   render() {
     const { classes, item, onSwipeRight, removeCard, index } = this.props;
-
+    
     return (
       <div style={{ margin: "0px auto" }}>
         <Card className={classes.card}>
@@ -66,6 +67,13 @@ class MUICard extends React.Component {
               <Grid item xs={8}>
                 <CardContent>
                   <Grid direction="row" justify="center" alignItems="center">
+                  <center>{
+                      item.ratings && <StarRatingComponent name="rate user" editing={false} value={item.ratings.map(v=>{
+                        for(var key in v){ 
+                          return v[key] 
+                         }
+                        }).reduce((a,b)=> {return a+b}, 0)/item.ratings.length} /> 
+                    }</center>
                     <Typography variant="caption" className={classes.displayName}>
                       <b>{this.props.children}</b>
                     </Typography>
