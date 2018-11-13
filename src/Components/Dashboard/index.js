@@ -267,7 +267,7 @@ class Dashboard extends Component {
                   </div>
                   <br /><br />
                 </ExpansionPanelActions>
-                {((currentTime >= item.dateAndTime) && (item.myProfileObj.tempStatus && item.status === "PENDING")) && this.showTimePopup(item, title)}
+                {((currentTime >= item.dateAndTime) && (!item.myProfileObj.tempStatus && item.status === "PENDING")) && this.showTimePopup(item, title)}
               </ExpansionPanel>
             )
           })
