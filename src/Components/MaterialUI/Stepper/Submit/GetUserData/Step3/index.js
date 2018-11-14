@@ -20,7 +20,7 @@ const customStyle = {
   formControl: {
     margin: "10px",
     minWidth: 120,
-    maxWidth: 300,
+    maxWidth: "300",
   },
   chips: {
     display: 'flex',
@@ -29,8 +29,6 @@ const customStyle = {
   chip: {
     margin: '5px',
   },
-  inputLabel: {
-  }
 }
 
 class Step3 extends Component {
@@ -42,6 +40,7 @@ class Step3 extends Component {
       checkedC: false,
       time: []
     }
+    this.sendData = this.sendData.bind(this)
   }
 
   handleChange = name => event => {
@@ -52,12 +51,12 @@ class Step3 extends Component {
     this.setState({ time: event.target.value });
   };
 
-  componentDidUpdate() {
+  sendData(){
     const { getTimeAndBeverages, handleChangeState } = this.props
     const { checkedA, checkedB, checkedC, time } = this.state
-    if (((checkedA || checkedB || checkedC) && time) || (checkedA && checkedB && checkedC && time)) {
+    if ((checkedA || checkedB || checkedC) && time.length) {
       let beverages = [];//"Coffee", "Juice", "Cocktail"
-
+      
       checkedA && beverages.push('Coffee');
       checkedB && beverages.push('Juice');
       checkedC && beverages.push('Cocktail');
@@ -66,11 +65,26 @@ class Step3 extends Component {
       handleChangeState(3)
     } else {
       handleChangeState(2)
+    }
+    if (!(checkedA || checkedB || checkedC)) {
       Toast({
         type: "warning",
-        title: "Please select time and beverages"
+        title: "Please select beverages"
       })
     }
+    if (!time.length) {
+      Toast({
+        type: "warning",
+        title: "Please select time"
+      })
+    }
+  }
+
+  componentDidUpdate() {
+    this.sendData()
+  }
+  componentDidMount() {
+    this.sendData()
   }
 
   render() {
@@ -89,7 +103,7 @@ class Step3 extends Component {
       <div>
         <div className={customStyle.chipDiv}>
           <Typography variant="headline">Select Time</Typography>
-          <FormControl className={customStyle.formControl} fullWidth={false}>
+          <FormControl className={customStyle.formControl} fullWidth={true}>
             <InputLabel className={customStyle.inputLabel} htmlFor="select-multiple-chip">Time</InputLabel>
             <Select
               multiple
