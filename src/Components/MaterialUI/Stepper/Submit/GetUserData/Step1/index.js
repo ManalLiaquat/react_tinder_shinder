@@ -15,9 +15,11 @@ class Step1 extends Component {
   getData() {
     const { getNameAndPhone, handleChangeState } = this.props
     const { nickName, phone } = this.state
-    if (nickName && phone) {
-      getNameAndPhone(nickName, phone)
-      handleChangeState(1)
+    if (nickName) {
+      if (phone.length === 11) {
+        getNameAndPhone(nickName, phone)
+        handleChangeState(1)
+      }
     } else {
       handleChangeState(0)
       Toast({
@@ -48,6 +50,7 @@ class Step1 extends Component {
         <br />
         <TextField
           required
+          placeholder="Enter 11 digits number"
           id="standard-required"
           label="Phone Number"
           type="number"
