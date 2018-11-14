@@ -37,23 +37,25 @@ class Submit extends Component {
     let { step1, step2, step3, step4 } = this.props
     let { userData, user } = this.state
 
-    userData.displayName = user.displayName
+    if (user) {
+      userData.displayName = user.displayName
 
-    for (let key1 in step1) {
-      userData[key1] = step1[key1]
+      for (let key1 in step1) {
+        userData[key1] = step1[key1]
+      }
+
+      userData.images = step2
+
+      for (let key2 in step3) {
+        userData[key2] = step3[key2]
+      }
+
+      userData.location = step4
+
+      userData.uid = user.uid
+
+      this.setState({ userData })
     }
-
-    userData.images = step2
-
-    for (let key2 in step3) {
-      userData[key2] = step3[key2]
-    }
-
-    userData.location = step4
-
-    userData.uid = user.uid
-
-    this.setState({ userData })
   }
 
   render() {

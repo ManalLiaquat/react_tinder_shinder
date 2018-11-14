@@ -12,7 +12,7 @@ import { updateUser } from "../../Config/Redux/Actions/authActions";
 import { Carousel } from "react-responsive-carousel";
 import firebase from "firebase";
 import MyMapComponent from "./map";
-import Stepper from "../MaterialUI/Stepper";
+import Stepper from "../../Components/MaterialUI/Stepper";
 
 const styles = theme => ({
   fab: {
@@ -170,7 +170,7 @@ class Profile extends Component {
                     isMarkerShown
                     googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
                     loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `200px` }} />}
+                    containerElement={<div style={{ height: `300px` }} />}
                     mapElement={<div style={{ height: `100%` }} />}
                   />
                 </Grid>

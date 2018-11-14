@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, FormGroup } from "@material-ui/core";
 import Refresh from "@material-ui/icons/Refresh";
 import Submit from "./Submit";
-import Step1 from './Submit/GetUserData/Step1/'
-import Step2 from './Submit/GetUserData/Step2/'
-import Step3 from './Submit/GetUserData/Step3/'
-import Step4 from './Submit/GetUserData/Step4/'
+import Step1 from './Submit/GetUserData/Step1'
+import Step2 from './Submit/GetUserData/Step2'
+import Step3 from './Submit/GetUserData/Step3'
+import Step4 from './Submit/GetUserData/Step4'
 
 const styles = theme => ({
   root: {

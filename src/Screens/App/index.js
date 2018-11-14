@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import AppBar from '../MaterialUI/AppBar';
+import AppBar from '../../Components/MaterialUI/AppBar';
 import firebase from "../../Config/firebase";
 import Toast from "../../Constants/Toast";
 import { withStyles } from '@material-ui/core/styles';
 import { Modal, Avatar, Typography, Button, IconButton } from "@material-ui/core";
 import { green, indigo } from '@material-ui/core/colors/';
 import CloseIcon from "@material-ui/icons/Close";
-import Directions from "../Directions";
+import Directions from "../../Components/Directions";
 import moment from 'moment';
 import { connect } from "react-redux";
 import { updateUser } from "../../Config/Redux/Actions/authActions";
@@ -117,6 +117,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.props.updateUser()
     this.showNotification()
   }
 

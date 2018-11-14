@@ -34,7 +34,7 @@ class MUICard extends React.Component {
 
   render() {
     const { classes, item, onSwipeRight, removeCard, index } = this.props;
-    
+
     return (
       <div style={{ margin: "0px auto" }}>
         <Card className={classes.card}>
@@ -58,7 +58,6 @@ class MUICard extends React.Component {
               direction="row"
               justify="center"
               alignItems="center">
-
               <Grid item xs={2}>
                 <IconButton color="secondary" aria-label="Remove Card" onClick={() => { removeCard(index) }}>
                   <CloseIcon />
@@ -67,12 +66,12 @@ class MUICard extends React.Component {
               <Grid item xs={8}>
                 <CardContent>
                   <Grid direction="row" justify="center" alignItems="center">
-                  <center>{
-                      item.ratings && <StarRatingComponent name="rate user" editing={false} value={item.ratings.map(v=>{
-                        for(var key in v){ 
-                          return v[key] 
-                         }
-                        }).reduce((a,b)=> {return a+b}, 0)/item.ratings.length} /> 
+                    <center>{
+                      item.ratings && <StarRatingComponent name="rate user" editing={false} value={item.ratings.map(v => {
+                        for (var key in v) {
+                          return v[key]
+                        }
+                      }).reduce((a, b) => { return a + b }, 0) / item.ratings.length} />
                     }</center>
                     <Typography variant="caption" className={classes.displayName}>
                       <b>{this.props.children}</b>
@@ -88,10 +87,7 @@ class MUICard extends React.Component {
                   <CheckIcon />
                 </IconButton>
               </Grid>
-
             </Grid>
-
-
           </CardActions>
         </Card>
       </div >

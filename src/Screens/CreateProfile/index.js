@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
-import Stepper from "../MaterialUI/Stepper";
+import Stepper from "../../Components/MaterialUI/Stepper";
 
 const CreateProfile = (props) => {
   return (

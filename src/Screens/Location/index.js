@@ -4,7 +4,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import PlaceIcon from '@material-ui/icons/Place';
 import ForwardIcon from '@material-ui/icons/ArrowRight';
 import DirectionsIcon from '@material-ui/icons/Directions';
-import Directions from "../Directions";
+import Directions from "../../Components/Directions";
 
 import exploreApi from "../../APIs/Explore";
 import searchApi from "../../APIs/Search";

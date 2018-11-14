@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
-import CustomRoutes from "./Routes";
+import CustomRoutes from "./Config/Routes";
 import * as serviceWorker from "./serviceWorker";
 import "./Config/firebase";
 import { Provider } from "react-redux";

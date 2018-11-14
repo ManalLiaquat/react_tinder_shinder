@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../../Config/firebase";
-import UserCard from "../UserCard";
+import UserCard from "../../Components/UserCard";
 import { connect } from "react-redux";
 import { updateUser } from "../../Config/Redux/Actions/authActions";
 
