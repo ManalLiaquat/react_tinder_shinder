@@ -80,7 +80,7 @@ class Step2 extends Component {
 
     return (
       <Grid container spacing={16} className={classes.root}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4} md={4}>
           <Paper className={classes.paper}>
             {this.state.avatarURL1 && <img src={this.state.avatarURL1} width="200px" height="200px" alt="Coffee" />}
             <CustomUploadButton
@@ -110,7 +110,7 @@ class Step2 extends Component {
 
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4} md={4}>
           <Paper className={classes.paper}>
             {this.state.avatarURL2 && <img src={this.state.avatarURL2} width="200px" height="200px" alt="Juice" />}
             <CustomUploadButton
@@ -140,7 +140,7 @@ class Step2 extends Component {
 
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4} md={4}>
           <Paper className={classes.paper}>
             {this.state.avatarURL3 && <img src={this.state.avatarURL3} width="200px" height="200px" alt="Cocktail" />}
             <CustomUploadButton
