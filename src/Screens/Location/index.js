@@ -81,6 +81,7 @@ class Location extends Component {
               id="margin-none"
               fullWidth={true}
               helperText="Search other locations"
+              onKeyDown={(e)=>{e.keyCode === 13 && this.handleSearch()}}
               onChange={e => { this.setState({ searchTerm: e.target.value }) }}
             />
           </Grid>
