@@ -48,7 +48,7 @@ class Meetings extends Component {
     return (
       <div>
         {
-          myLocation.length && <UserCard myLocation={myLocation} myOptions={myOptions} myProfileObj={myProfileObj} {...this.props} />
+          myLocation.length > 0 && <UserCard myLocation={myLocation} myOptions={myOptions} myProfileObj={myProfileObj} {...this.props} />
         }
       </div>
     );
