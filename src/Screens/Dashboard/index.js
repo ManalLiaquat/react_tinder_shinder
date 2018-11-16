@@ -173,6 +173,7 @@ class Dashboard extends Component {
           </div>
           <Typography variant="subtitle1">Venue: {item.placeInfo.name}</Typography>
           <Typography variant="subtitle1">Place: {item.placeInfo.location.address}</Typography>
+          <Typography variant="caption">Time/Days: {moment(item.dateAndTime).fromNow()}</Typography>
           <br />
           <Divider />
           <Typography variant="subtitle2">How much will you rate {item.friendProfileObj.displayName}</Typography>
@@ -183,10 +184,10 @@ class Dashboard extends Component {
           />
           <Divider />
           <br />
-          <Button variant="contained" color="primary" onClick={() => { this.handlePopupStatus(item, "YES", title) }}>
+          <Button variant="contained" disabled={rate>0?false:true} color="primary" onClick={() => { this.handlePopupStatus(item, "YES", title) }}>
             <ThumbUpIcon /> YES
           </Button>{' '}
-          <Button variant="contained" color="secondary" onClick={() => { this.handlePopupStatus(item, "NO", title) }}>
+          <Button variant="contained" disabled={rate>0?false:true} color="secondary" onClick={() => { this.handlePopupStatus(item, "NO", title) }}>
             NO <ThumbDownIcon />
           </Button>
         </div>
