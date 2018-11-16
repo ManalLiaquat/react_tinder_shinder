@@ -77,8 +77,8 @@ class SwipeableTemporaryDrawer extends React.Component {
         </div>
         <Divider />
         <List>{mailFolderListItems}</List>
-        <Divider />
-        <List>{otherMailFolderListItems}</List>
+        {/* <Divider />
+        <List>{otherMailFolderListItems}</List> */}
       </div>
     );
 
