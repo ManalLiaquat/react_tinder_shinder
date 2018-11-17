@@ -74,7 +74,7 @@ class Profile extends Component {
 
   getUserProfile() {
     let { user } = this.state
-    firebase.database().ref(`/user_data/${user.uid}/`).once("value", data => {
+    firebase.database().ref(`/user_data/${user.uid}/`).on("value", data => {
       this.setState({
         myProfile: data.val()
       })
