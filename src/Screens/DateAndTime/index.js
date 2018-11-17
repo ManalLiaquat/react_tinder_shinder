@@ -51,7 +51,7 @@ class DateAndTime extends Component {
                 console.log(token.key)
                 $.ajax({
                   type: 'POST', url: "https://fcm.googleapis.com/fcm/send",
-                  headers: { Authorization: 'key=AIzaSyBrrOsrvThKXpEt-1ZoAP9DhpwRs1B5l4E' },
+                  headers: { Authorization: 'key=#######################' },
                   contentType: 'application/json',
                   dataType: 'json',
                   data: JSON.stringify({
