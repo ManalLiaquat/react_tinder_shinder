@@ -106,18 +106,24 @@ class Dashboard extends Component {
 
   getUserMeetings() {
     let { meetings, user } = this.state
-    firebase.database().ref(`/meetings/${user.uid}`).on('child_added', data => {
+    firebase.database().ref(`/meetings/${user.uid}`).on('value', data => {
+      meetings = []
       let meetData = data.val()
-      meetings.push(meetData)
+      for(var key in meetData){
+        meetings.push(meetData[key])
+      }
       this.setState({ meetings })
     })
   }
 
   getUserRequests() {
     let { requests, user } = this.state
-    firebase.database().ref(`/requests/${user.uid}`).on('child_added', data => {
+    firebase.database().ref(`/requests/${user.uid}`).on('value', data => {
+      requests = []
       let reqData = data.val()
-      requests.push(reqData)
+      for(var key in reqData){
+        requests.push(reqData[key])
+      }
       this.setState({ requests })
     })
   }
