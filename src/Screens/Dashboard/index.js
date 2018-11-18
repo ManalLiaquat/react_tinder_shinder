@@ -244,6 +244,7 @@ class Dashboard extends Component {
                   :"CANCELLED" 
                 : 'COMPLICATED'
               : item.status
+              
             return (
               <ExpansionPanel key={item.friendProfileObj.uid}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -256,12 +257,12 @@ class Dashboard extends Component {
                   <ListItemText primary={`Status: ${status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
                     {showBtn && <div>
                     <Tooltip title="Cancel" disableFocusListener placement="top">
-                      <IconButton disabled={item.status !== 'PENDING' ? true : false} onClick={() => { this.handleStatus(item, "CANCELLED") }} color="secondary">
+                      <IconButton disabled={ (item.status === 'ACCEPTED') || (item.status === "CANCELLED") || (status === 'DONE') || (status === 'COMPLICATED') || (status === 'CANCELLED') ? true: item.status === "PENDING" ? false : true } onClick={() => { this.handleStatus(item, "CANCELLED") }} color="secondary">
                         <CancelIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Accept" disableFocusListener placement="top">
-                      <IconButton disabled={item.status !== 'PENDING' ? true : false} onClick={() => { this.handleStatus(item, "ACCEPTED") }} style={{ color: item.status !== 'PENDING' ? 'grey' : green[800] }}>
+                      <IconButton disabled={ (item.status === 'ACCEPTED') || (item.status === "CANCELLED") || (status === 'DONE') || (status === 'COMPLICATED') || (status === 'CANCELLED') ? true: item.status === "PENDING" ? false : true } onClick={() => { this.handleStatus(item, "ACCEPTED") }} style={{ color: ((item.status !== 'PENDING') && status) ? 'grey' : green[800] }}>
                         <DoneIcon />
                       </IconButton>
                     </Tooltip>
