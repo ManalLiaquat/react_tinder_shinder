@@ -8,12 +8,22 @@ import "./Config/firebase";
 import { Provider } from "react-redux";
 import { store, persistor } from "./Config/Redux/store";
 import { PersistGate } from 'redux-persist/integration/react'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    suppressDeprecationWarnings: true
+  }
+});
 
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router>
-        <CustomRoutes />
+        <MuiThemeProvider theme={theme}>
+          <CustomRoutes />
+        </MuiThemeProvider>
       </Router>
     </PersistGate>
   </Provider>, document.getElementById("root"));
