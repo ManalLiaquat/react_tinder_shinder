@@ -140,8 +140,20 @@ class Dashboard extends Component {
     let { user, rate } = this.state
     meetingObj.myProfileObj.tempStatus = tempStatus
     var friendProfileObj = meetingObj.friendProfileObj;
-    friendProfileObj.ratings = []
-    friendProfileObj.ratings.push({[user.uid]: rate})
+    if(!friendProfileObj.ratings){
+      friendProfileObj.ratings = []
+      friendProfileObj.ratings.push({[user.uid]: rate})
+    } else {
+      friendProfileObj.ratings.map((v,i)=>{
+        for(let key in v){
+          if(key === user.uid){
+            friendProfileObj.ratings[i][key] = rate
+          } else {
+            friendProfileObj.ratings.push({[user.uid]: rate})
+          }
+        }
+      })
+    }
     firebase.database().ref(`/user_data/${friendProfileObj.uid}/`).set(friendProfileObj)
     firebase.database().ref(`/${nodeName}/${user.uid}/${meetingObj.friendProfileObj.uid}/`).set(meetingObj)
       .then(() => {
@@ -256,16 +268,20 @@ class Dashboard extends Component {
                   <hr />
                   <ListItemText primary={`Status: ${status}`} secondary={`Location: ${item.placeInfo.name}, ${item.placeInfo.location.address}`} />
                     {showBtn && <div>
-                    <Tooltip title="Cancel" disableFocusListener placement="top">
-                      <IconButton disabled={ status !== "PENDING" ? true:false } onClick={() => { this.handleStatus(item, "CANCELLED") }} color="secondary">
-                        <CancelIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Accept" disableFocusListener placement="top">
-                      <IconButton disabled={ status !== "PENDING" ? true:false } onClick={() => { this.handleStatus(item, "ACCEPTED") }} style={{ color: status !== 'PENDING' ? 'grey' : green[800] }}>
-                        <DoneIcon />
-                      </IconButton>
-                    </Tooltip>
+                      <Tooltip title="Cancel" disableFocusListener placement="top">
+                        <div>
+                          <IconButton disabled={ status !== "PENDING" ? true:false } onClick={() => { this.handleStatus(item, "CANCELLED") }} color="secondary">
+                            <CancelIcon />
+                          </IconButton>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Accept" disableFocusListener placement="top">
+                        <div>
+                          <IconButton disabled={ status !== "PENDING" ? true:false } onClick={() => { this.handleStatus(item, "ACCEPTED") }} style={{ color: status !== 'PENDING' ? 'grey' : green[800] }}>
+                            <DoneIcon />
+                          </IconButton>
+                        </div>
+                     </Tooltip>
                   </div>}
                 </ExpansionPanelDetails>
                 <Divider />
@@ -275,7 +291,7 @@ class Dashboard extends Component {
                   </div>
                   <br /><br />
                 </ExpansionPanelActions>
-                {((currentTime >= item.dateAndTime) && (!item.myProfileObj.tempStatus && item.status === "PENDING")) && this.showTimePopup(item, title)}
+                {((currentTime >= item.dateAndTime) && (!item.myProfileObj.tempStatus && status === "PENDING")) && this.showTimePopup(item, title)}
               </ExpansionPanel>
             )
           })
