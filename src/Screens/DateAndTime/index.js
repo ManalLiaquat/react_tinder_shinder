@@ -32,6 +32,10 @@ class DateAndTime extends Component {
       meetingData.dateAndTime = dateTime.getTime()
       meetingData.status = "PENDING"
 
+      if (meetingData.myProfileObj.tempStatus) {
+        delete meetingData.myProfileObj.tempStatus
+      }
+      
       firebase.database().ref(`/meetings/${meetingData.myProfileObj.uid}/${meetingData.friendProfileObj.uid}/`).set(meetingData)
         .then(() => {
 
@@ -42,13 +46,14 @@ class DateAndTime extends Component {
             myProfileObj: meetingData.friendProfileObj,
             friendProfileObj: meetingData.myProfileObj
           }
+
           firebase.database().ref(`/requests/${meetingData.friendProfileObj.uid}/${meetingData.myProfileObj.uid}/`).set(meetingData2)
 
           firebase.database().ref("fcmTokens").once("value", function (snapshot) {
             // console.log(snapshot);
             snapshot.forEach(function (token) {
               if (token.val() === meetingData.friendProfileObj.uid) { //Getting the token of the reciever using  if condition..!   
-                console.log(token.key)
+                // console.log(token.key)
                 $.ajax({
                   type: 'POST', url: "https://fcm.googleapis.com/fcm/send",
                   headers: { Authorization: 'key=#######################' },
@@ -64,7 +69,7 @@ class DateAndTime extends Component {
                     }
                   }),
                   success: function (response) {
-                    console.log(response);
+                    console.log("notification sent");
                     //Functions to run when notification is succesfully sent to reciever
                   },
                   error: function (xhr, status, error) {
