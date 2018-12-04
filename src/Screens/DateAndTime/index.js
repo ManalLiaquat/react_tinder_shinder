@@ -61,9 +61,9 @@ class DateAndTime extends Component {
                   dataType: 'json',
                   data: JSON.stringify({
                     "to": token.key, "notification": {
-                      "title": `New Request From ${meetingData.myProfileObj.nickName}`,
-                      "body": "You have a new meeting request",
-                      "icon": "https://firebasestorage.googleapis.com/v0/b/tinder-shinder-2.appspot.com/o/Notifications.png?alt=media&token=b4c86061-9644-4faa-a316-6461be0fe421", //Photo of sender
+                      "title": `New Request From ${meetingData.myProfileObj.displayName}`,
+                      "body": `${meetingData.myProfileObj.nickName} wants to meet you at ${meetingData.placeInfo.name}`,
+                      "icon": meetingData.myProfileObj.images[0], //Photo of sender
                       "click_action": `https://tinder-shinder-2.firebaseapp.com/dashboard`,
                       "myObject": JSON.stringify(meetingData2)
                     }
