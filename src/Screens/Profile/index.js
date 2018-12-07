@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Typography, Button, Grid, Paper, Divider, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Modal, IconButton, AppBar, Toolbar } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { yellow } from "@material-ui/core/colors";
 import EditIcon from "@material-ui/icons/Edit";
 import TimeIcon from "@material-ui/icons/Timer";
 import LocalBarIcon from '@material-ui/icons/LocalBar';
 import CloseIcon from '@material-ui/icons/Close';
-import { yellow } from "@material-ui/core/colors";
 
 import { connect } from "react-redux";
 import { updateUser } from "../../Config/Redux/Actions/authActions";
@@ -114,12 +114,12 @@ class Profile extends Component {
                       emulateTouch={true}
                       autoPlay={true}
                       infiniteLoop={true}
-                      showIndicators={false}
+                      showIndicators={false}                      
                     >
                       {
                         myProfile.images.map(path => (
                           <div>
-                            <img src={path} height="300px" alt="userImg" className={classes.bigAvatar} />
+                            <img src={path} alt="userImg" className={classes.bigAvatar} />
                           </div>
                         ))
                       }

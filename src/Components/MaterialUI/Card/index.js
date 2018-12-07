@@ -44,7 +44,7 @@ class MUICard extends React.Component {
             infiniteLoop={true}
             swipeable={true}
             emulateTouch={true}
-            autoPlay={true}>
+            autoPlay={false}>
             {
               item.images.map(path => (
                 <div>

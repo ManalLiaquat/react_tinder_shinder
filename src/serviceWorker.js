@@ -7,6 +7,7 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+import Toast from "./Constants/Toast";
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -66,6 +67,10 @@ function registerValidSW(swUrl, config) {
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
               console.log('New content is available; please refresh.');
+              Toast({
+                type:"info",
+                text:"New content is available; please refresh."
+              })
 
               // Execute callback
               if (config.onUpdate) {
@@ -76,6 +81,10 @@ function registerValidSW(swUrl, config) {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
+              Toast({
+                type:"info",
+                text:"ontent is cached for offline use."
+              })
 
               // Execute callback
               if (config.onSuccess) {
