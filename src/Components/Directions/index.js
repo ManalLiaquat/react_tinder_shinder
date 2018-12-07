@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* global google */
 import React, { Component } from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { withGoogleMap, GoogleMap, Marker, DirectionsRenderer, withScriptjs } from "react-google-maps"
 
 class Directions extends Component {
@@ -34,6 +34,10 @@ class Directions extends Component {
     });
   }
 
+  componentDidMount(){
+    this.getDirections()
+  }
+
   render() {
     const { directions, err } = this.state
     const { userLocation, placeLocation } = this.props
@@ -51,8 +55,7 @@ class Directions extends Component {
           placeLocation={placeLocation}
         />
         <br />
-        <Button variant="contained" color="primary" onClick={this.getDirections}>Get Directions</Button>
-        <Typography variant="caption" color="secondary" align="right">{err}</Typography>
+        <Typography variant="caption" color="secondary" align="left">{err}</Typography>
       </div>
     )
   }
