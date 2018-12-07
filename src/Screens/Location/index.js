@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Grid, Paper, Typography, TextField, Button, Tooltip, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton, Modal } from '@material-ui/core'
+import withWidth from '@material-ui/core/withWidth';
 import SearchIcon from "@material-ui/icons/Search";
 import PlaceIcon from '@material-ui/icons/Place';
 import ForwardIcon from '@material-ui/icons/ArrowRight';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import CloseIcon from '@material-ui/icons/Close';
 import Directions from "../../Components/Directions";
 
 import exploreApi from "../../APIs/Explore";
@@ -71,11 +73,17 @@ class Location extends Component {
 
   render() {
     const { places, placeLocation, myProfileObj } = this.state
+    console.log(this.props.width);
+    
     return (
       <div style={{ textAlign: "center" }}>
         <br />
+        
+          {
+            this.props.width === "xs" ? (
         <Grid container spacing={24} direction="row" justify="center" alignItems="center">
-          <Grid item xs={8}>
+
+              <Grid xs={10}>
             <TextField
               label="Search..."
               id="margin-none"
@@ -85,8 +93,26 @@ class Location extends Component {
               onChange={e => { this.setState({ searchTerm: e.target.value }) }}
             />
           </Grid>
-          <Grid xs={2}><Button onClick={this.handleSearch} variant="fab" color="primary"><SearchIcon></SearchIcon></Button></Grid>
-        </Grid>
+          </Grid>
+            
+            ): (
+        <Grid container spacing={24} direction="row" justify="center" alignItems="center">              
+            <Grid xs={8}>
+              <TextField
+              label="Search..."
+              id="margin-none"
+              fullWidth={true}
+              helperText="Search other locations"
+              onKeyDown={(e)=>{e.keyCode === 13 && this.handleSearch()}}
+              onChange={e => { this.setState({ searchTerm: e.target.value }) }}
+              />
+            </Grid>
+            <Grid xs={2}>
+              <Button onClick={this.handleSearch} variant="fab" color="primary"><SearchIcon></SearchIcon></Button>
+            </Grid>
+            </Grid>
+            )
+          }
         <br />
         <Grid container spacing={24} direction="row" justify="center" alignItems="center">
           <Grid xs={10}>
@@ -94,7 +120,7 @@ class Location extends Component {
             <Paper>
               <Button variant="text" color="default" onClick={this.getNearByPlaces}>Near By Places</Button>
               <br />
-              <List >
+              <List>
                 {
                   places.map(place => {
                     return <ListItem key={place.id}>
@@ -134,7 +160,7 @@ class Location extends Component {
         >
           <div style={{ padding: "10px", left: '50%', top: "50%", backgroundColor: "white", width: "90%", margin: "0px auto" }}>
             <Directions placeLocation={placeLocation} userLocation={myProfileObj.location} />
-            <Button onClick={this.closeModal}>Close</Button>
+            <Button variant="outlined" size="small"  onClick={this.closeModal}><CloseIcon/> Close</Button>
           </div>
         </Modal>
       </div >
@@ -142,4 +168,4 @@ class Location extends Component {
   }
 }
 
-export default Location;
+export default withWidth()(Location);
